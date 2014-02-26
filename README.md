@@ -7,3 +7,17 @@ This is the backend for the march madness prediction algorithm. Some things we w
 -Home/ Away
 -Player injuries
 -More, Hoping to make it modular
+**Build**
+make init
+make
+**Other Commands**
+make mme #just build the engine
+make mmetest #just build the tests
+make clean #remove object code not including third-parties binaries
+**Run**
+./mme to run the engine
+./mmetest to run the tests
+**Dependencies**
+* gtest 1.7.0
+* sqlite3
+
