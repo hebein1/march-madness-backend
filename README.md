@@ -13,13 +13,13 @@ we wish to account for in the algorithm**
 * More, Hoping to make it modular
 
 **Build**
-* make init
-* make
+* make init # compiles gtest, you only need to run this once
+* make # compiles both the engine and the unit tests
 
 **Other Commands**
-* make mme #just build the engine
-* make mmetest #just build the tests
-* make clean #remove object code not including third-parties binaries
+* make mme # just build the engine
+* make mmetest # just build the tests
+* make clean # remove object code not including third-parties binaries
 
 **Run**
 * ./mme to run the engine
