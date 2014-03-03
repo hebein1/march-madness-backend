@@ -18,13 +18,12 @@ int main()
 	const unsigned int num_layers = 3;
 	const unsigned int num_neurons_hidden = 4;
 	const float desired_error = (const float) 0;
-	const unsigned int max_epochs = 1000;
+	const unsigned int max_epochs = 5000;
 	const unsigned int epochs_between_reports = 10;
 	struct fann *ann;
 	struct fann_train_data *data;
 
 	unsigned int i = 0;
-	unsigned int decimal_point;
 
 	printf("Creating network.\n");
 	ann = fann_create_standard(num_layers, num_input, num_neurons_hidden, num_output);
@@ -34,8 +33,9 @@ int main()
 	fann_set_activation_steepness_hidden(ann, 1);
 	fann_set_activation_steepness_output(ann, 1);
 
-	fann_set_activation_function_hidden(ann, FANN_SIGMOID_SYMMETRIC);
-	fann_set_activation_function_output(ann, FANN_SIGMOID_SYMMETRIC);
+	//use continuous log activation function
+	fann_set_activation_function_hidden(ann, FANN_SIGMOID);
+	fann_set_activation_function_output(ann, FANN_SIGMOID);
 
 	fann_set_train_stop_function(ann, FANN_STOPFUNC_BIT);
 	fann_set_bit_fail_limit(ann, 0.01f);
@@ -47,22 +47,23 @@ int main()
 	printf("Training network.\n");
 	fann_train_on_data(ann, data, max_epochs, epochs_between_reports, desired_error);
 
+	/**
+	
 	printf("Testing network. %f\n", fann_test_data(ann, data));
 
 	for(i = 0; i < fann_length_train_data(data); i++)
 	{
 		calc_out = fann_run(ann, data->input[i]);
-		printf("Matchup test (%f,%f) -> %f, should be %f, difference=%f\n",
+		printf("Matchup scores test (%f,%f) -> %f, should be %f, difference=%f\n",
 			   data->input[i][0], data->input[i][1], calc_out[0], data->output[i][0],
 			   fann_abs(calc_out[0] - data->output[i][0]));
 	}
 
+	**/
+	
 	printf("Saving network.\n");
 
 	fann_save(ann, "ncaa_float.net");
-
-	decimal_point = fann_save_to_fixed(ann, "ncaa_fixed.net");
-	fann_save_train_to_fixed(data, "ncaa_fixed.data", decimal_point);
 
 	printf("Cleaning up.\n");
 	fann_destroy_train(data);

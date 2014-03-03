@@ -1,6 +1,6 @@
 GCC=gcc
 
-TARGETS = ncaa_train ncaa_test ncaa_test_fixed
+TARGETS = ncaa_train ncaa_test
 
 all: $(TARGETS)
 
@@ -11,7 +11,7 @@ all: $(TARGETS)
 	$(GCC) -O3 -DFIXEDFANN $< -o $@ -lfixedfann -lm
 
 clean:
-	rm -f $(TARGETS) ncaa_fixed.data *.net *~ *.obj *.exe *.tds
+	rm -f $(TARGETS) *.net *~ *.obj *.exe *.tds
 
 runtest: $(TARGETS)
 	@echo
@@ -21,7 +21,3 @@ runtest: $(TARGETS)
 	@echo
 	@echo Testing network with floats
 	./ncaa_test
-
-	@echo
-	#@echo Testing network with fixed points
-	./ncaa_test_fixed
