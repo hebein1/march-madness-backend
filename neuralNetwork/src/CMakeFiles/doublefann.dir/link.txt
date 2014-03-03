@@ -1,0 +1,1 @@
+/usr/bin/cc   -dynamiclib -Wl,-headerpad_max_install_names   -compatibility_version 2.0.0 -current_version 2.2.0 -o libdoublefann.2.2.0.dylib -install_name "/Users/siddharthshukramani/Desktop/CS 429/FANN-2.2.0-Source/src/"libdoublefann.2.dylib CMakeFiles/doublefann.dir/doublefann.c.o 

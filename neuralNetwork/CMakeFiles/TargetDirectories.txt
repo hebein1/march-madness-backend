@@ -1,0 +1,4 @@
+/Users/siddharthshukramani/Desktop/CS 429/FANN-2.2.0-Source/src/CMakeFiles/doublefann.dir
+/Users/siddharthshukramani/Desktop/CS 429/FANN-2.2.0-Source/src/CMakeFiles/fann.dir
+/Users/siddharthshukramani/Desktop/CS 429/FANN-2.2.0-Source/src/CMakeFiles/fixedfann.dir
+/Users/siddharthshukramani/Desktop/CS 429/FANN-2.2.0-Source/src/CMakeFiles/floatfann.dir
