@@ -16,9 +16,9 @@ gtest:
 	ar -rv libgtest.a gtest-all.o	
 
 ann_test: ncaa_train.cpp ncaa_train.o
-	g++ -isystem ${PWD}/${GTEST_DIR}/include -c annTest.cpp 
-	g++ -isystem ${PWD}/${GTEST_DIR}/include -pthread annTest.o \
-		${PWD}/${GTEST_DIR}/src/gtest_main.cc ${PWD}/${GTEST_DIR}/libgtest.a \
+	g++ -isystem ${PWD}/../../${GTEST_DIR}/include -c annTest.cpp 
+	g++ -isystem ${PWD}/../../${GTEST_DIR}/include -pthread annTest.o \
+		${PWD}/../../${GTEST_DIR}/src/gtest_main.cc ${PWD}/${GTEST_DIR}/libgtest.a \
 		-lfann -lm -o ann_test
 
 %: %.cpp Makefile
