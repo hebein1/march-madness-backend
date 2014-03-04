@@ -1,7 +1,7 @@
 # This is the makefile for the March Madness Engine
 LIB_DIR=lib
 BIN_DIR=bin
-GTEST_DIR=${LIB_DIR}/gtest-1.7.0
+GTEST_DIR=gtest-1.7.0
 CLEAN_FILES=dbctest.o predictor.o dbc.o dbc dbctests mmetests mme
 C_FLAGS=-lsqlite3
 
@@ -23,7 +23,7 @@ mmetests: dbctests
 dbctests: dbctest.cpp dbc.o
 	g++ -isystem ${PWD}/${GTEST_DIR}/include -c dbctest.cpp 
 	g++ -isystem ${PWD}/${GTEST_DIR}/include -pthread dbctest.o dbc.o \
-		${PWD}/${GTEST_DIR}/src/gtest_main.cc libgtest.a \
+		${PWD}/${GTEST_DIR}/src/gtest_main.cc ${PWD}/${GTEST_DIR}/libgtest.a \
 		-lsqlite3 -o mmetests
 
 # This is the March Madness Engine builder
