@@ -2,16 +2,18 @@ GCC=gcc
 
 TARGETS = ncaa_train ncaa_test
 
-GTEST_DIR=gtest-1.7.0
+LIB_DIR=lib
+
+GTEST_DIR=${LIB_DIR}/gtest-1.7.0
 
 all: $(TARGETS) ann_test
 
 init: gtest
 
 gtest: 
-	g++ -isystem ${GTEST_DIR}/include -I${GTEST_DIR} -pthread -c \
-	 	${GTEST_DIR}/src/gtest-all.cc 
-	ar -rv libgtest.a gtest-all.o
+	g++ -isystem ${PWD}/../../${GTEST_DIR}/include -I ${PWD}/../../${GTEST_DIR} -pthread -c \
+	 	${PWD}/../../${GTEST_DIR}/src/gtest-all.cc 
+	ar -rv libgtest.a gtest-all.o	
 
 ann_test: ncaa_train.cpp ncaa_train.o
 	g++ -isystem ${PWD}/${GTEST_DIR}/include -c annTest.cpp 
