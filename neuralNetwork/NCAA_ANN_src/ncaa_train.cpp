@@ -1,6 +1,4 @@
-#include <stdio.h>
-
-#include "fann.h"
+#include "ncaa_train.h"
 
 int FANN_API test_callback(struct fann *ann, struct fann_train_data *train,
 	unsigned int max_epochs, unsigned int epochs_between_reports, 
@@ -26,7 +24,7 @@ int main()
 	unsigned int i = 0;
 
 	printf("Creating network.\n");
-	ann = fann_create_standard(num_layers, num_input, num_neurons_hidden, num_output);
+	ann = createNetwork(num_layers, num_input, num_neurons_hidden, num_output); 
 
 	data = fann_read_train_from_file("ncaa.data");
 
@@ -71,3 +69,4 @@ int main()
 
 	return 0;
 }
+
