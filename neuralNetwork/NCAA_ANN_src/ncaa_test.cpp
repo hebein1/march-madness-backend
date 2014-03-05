@@ -27,7 +27,7 @@ int main()
 
 	printf("Testing network.\n");
 
-	data = fann_read_train_from_file("ncaa.data");
+	data = fann_read_train_from_file("ncaaTest.data");
 
 	for(i = 0; i < fann_length_train_data(data); i++)
 	{

@@ -1,4 +1,4 @@
-File.open('ncaa.data', 'w') do |file|
+File.open('ncaaTest.data', 'w') do |file|
 	i = 0
 	str = "2000 2 1\n"
 	while i<2000 do
