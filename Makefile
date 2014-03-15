@@ -13,17 +13,17 @@ init : gtest
 
 # Command to build gtest library
 gtest:
-	g++ -isystem ${GTEST_DIR}/include -I${GTEST_DIR} -pthread -c \
-	 	${GTEST_DIR}/src/gtest-all.cc 
+	g++ -isystem ${LIB_DIR}/${GTEST_DIR}/include -I ${LIB_DIR}/${GTEST_DIR} -pthread -c \
+	 	${LIB_DIR}/${GTEST_DIR}/src/gtest-all.cc 
 	ar -rv libgtest.a gtest-all.o
 
 # This March Madness Engine test builder all test should be a dependency of mmetests
 mmetests: dbctests
 
 dbctests: dbctest.cpp dbc.o
-	g++ -isystem ${PWD}/${GTEST_DIR}/include -c dbctest.cpp 
-	g++ -isystem ${PWD}/${GTEST_DIR}/include -pthread dbctest.o dbc.o \
-		${PWD}/${GTEST_DIR}/src/gtest_main.cc ${PWD}/${GTEST_DIR}/libgtest.a \
+	g++ -isystem ${PWD}/${LIB_DIR}/${GTEST_DIR}/include -c dbctest.cpp 
+	g++ -isystem ${PWD}/${LIB_DIR}/${GTEST_DIR}/include -pthread dbctest.o dbc.o \
+		${PWD}/${LIB_DIR}/${GTEST_DIR}/src/gtest_main.cc libgtest.a \
 		-lsqlite3 -o mmetests
 
 # This is the March Madness Engine builder
