@@ -5,7 +5,7 @@ command: make init
 command: make
 
 3. Build decision tree (uses files march_madness.names, march_madness.data, march_madness.test)
-command: ../c5.0 -f march_madness
+command: ../c5_source/c5.0 -f march_madness
 
 4. Run decision tree on data from file march_madness.cases
 command: ./sample -f march_madness

@@ -13,7 +13,7 @@ TEST(MMP, testSampleApplication)
 
 	/* generate the decision tree if it has not been made already */
 	if( access( "march_madness.tree", F_OK ) == -1 ) {
-		FILE* pipe = popen("../c5.0 -f march_madness", "r");
+		FILE* pipe = popen("../c5_source/c5.0 -f march_madness", "r");
 		if(pipe)
 		{
 			pclose(pipe);
