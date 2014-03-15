@@ -34,7 +34,7 @@ predictor.o:
 	g++ -o predictor.o -c basicPredictor.cpp
 
 dbc.o: dbc.cpp dbc.h
-	g++ ${C_FLAGS} -c dbc.cpp
+	g++ -std=c++0x ${C_FLAGS} -c dbc.cpp
 
 # Destroy object files
 clean:
