@@ -11,7 +11,13 @@
 
 const string ClientConnection::SERVERNAME = "localhost";
 
-bool ClientConnection::begin() {
+bool ClientConnection::startConnection() {
+    // testing purposes only
+    if (this->instream != NULL || this->outstream != NULL) {
+	this->isConnected = true;
+	return this->isConnected;
+    }
+
     struct sockaddr_in serv_addr;
     struct hostent *server;
 
@@ -41,18 +47,64 @@ bool ClientConnection::begin() {
     }
     this->isConnected = true;
 
-    return true;
+    return this->isConnected;
 }
 
-void ClientConnection::disconnect() {
+void ClientConnection::pushMessageOnQueue(char * buff, int n) {
+	int last = 0;
+	int x;
+	for (x = 0; x < n; x++) {
+		if(strncmp(buff + x, "\r\n\r\n",4) == 0) {
+			this->messages.push(new string(buff + last,x));
+			x += 4;
+			last = x;
+		}
+	}
+
+}
+
+void ClientConnection::checkMessages() {	
+	char buff [ClientConnection::BUFFSIZE];
+	buff[ClientConnection::BUFFSIZE - 1] = '\0';
+	int n;
+	if (this->instream == NULL) {
+		n = read(sockfd,buff,ClientConnection::BUFFSIZE - 1);
+	} else {
+		n = strlen(this->instream);
+		strncpy(buff,this->instream,n);
+	}
+	pushMessageOnQueue(buff,n);
+}
+
+void ClientConnection::endConnection() {
 	return;
 }
 
-string ClientConnection::poll() {
-	return "test";
+int ClientConnection::poll() {
+	return this->messages.size();
+}
+
+/**
+ * YOU MUST DELETE ANY MESSAGES YOU RECEIVE
+ */
+string * ClientConnection::getMessage() {
+	checkMessages(); // add messages from socket onto queue
+	if (this->messages.size() == 0) {
+		return NULL;
+	}
+	string * message = messages.front();
+	this->messages.pop();
+	return message;
 }
 
 bool ClientConnection::send(string message) {
-	return false;
+	int n = 0;
+	message.append("\r\n\r\n");
+	if (this->outstream == NULL) { 
+		write(sockfd,message.c_str(),message.length());	
+	} else { // for testing purposes do not send over socket
+		strcpy(this->outstream,message.c_str());
+	}	
+	return true;
 }
 
