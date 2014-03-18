@@ -17,14 +17,22 @@ TEST(ClientConnection, Connect) {
 
 TEST(ClientConnection, ServerRequest) {
 	char test_buffer [ BSIZE ];
-	string input = "hello world\r\n\r\n";
+	string input = "hello world\r\n\r\ntest1\r\n\r\n3total\r\n\r\n";
 
 	std::strcpy(test_buffer,input.c_str());
 	
 	ClientConnection cc (test_buffer, NULL);
+	
+	EXPECT_EQ(3,cc.poll());
 
 	string * message = cc.getMessage();
-	ASSERT_STREQ(message->c_str(),"hello world");
+	EXPECT_STREQ(message->c_str(),"hello world");
+	
+	message = cc.getMessage();
+	EXPECT_STREQ(message->c_str(),"test1");
+	
+	message = cc.getMessage();
+	EXPECT_STREQ(message->c_str(),"3total");
 }
 
 TEST(ClientConnection, ClientResponse) {

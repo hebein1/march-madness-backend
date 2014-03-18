@@ -55,7 +55,7 @@ void ClientConnection::pushMessageOnQueue(char * buff, int n) {
 	int x;
 	for (x = 0; x < n; x++) {
 		if(strncmp(buff + x, "\r\n\r\n",4) == 0) {
-			this->messages.push(new string(buff + last,x));
+			this->messages.push(new string(buff + last,x - last));
 			x += 4;
 			last = x;
 		}
@@ -77,10 +77,15 @@ void ClientConnection::checkMessages() {
 }
 
 void ClientConnection::endConnection() {
+	if (this->instream == NULL && this->outstream == NULL) {
+		close(sockfd);
+	}
+	isConnected = false;
 	return;
 }
 
 int ClientConnection::poll() {
+	checkMessages();
 	return this->messages.size();
 }
 
