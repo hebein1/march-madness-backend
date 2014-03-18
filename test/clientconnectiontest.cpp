@@ -1,39 +1,35 @@
 #define BSIZE 1024
-#include "clientconnection.h"
+#include "../src/clientconnection.h"
 #include "gtest/gtest.h"
 #include <fstream>
 #include <iostream>
+#include <stdio.h>
 #include <cstring>
 
 
 TEST(ClientConnection, Connect) {
-	ClientConnection cc = new ClientConnection();
-	EXPECT_TRUE(cc.connect());
-	EXPECT_TRUE(cc.isConnected());
-	EXPECT_TRUE(cc.disconnect());
-	EXPECT_FALSE(cc.isConnected());
+	ClientConnection cc;
+	EXPECT_TRUE(cc.begin());
+	EXPECT_TRUE(cc.getIsConnected());
+	cc.disconnect();
+	EXPECT_FALSE(cc.getIsConnected());
 }
 
 TEST(ClientConnection, ServerRequest) {
 	char test_buffer[ BSIZE ];
-	string[] messages = { "hello world\r\n\r\n" };
+	string input = "hello world\r\n\r\n";
 
-	int startIdx = 0;
-	for (string message : messages) {
-		int len = strlen(message);
-		ASSERT_TRUE(startIdx + len < BSIZE);
-		strcpy(test_buffer + startIdx,message);
-	}
+	std::strcpy(test_buffer,input.c_str());
 	
-	ClientConnection cc = new ClientConnection(test_buffer, NULL);
+	ClientConnection cc (test_buffer, NULL);
 
 	string message = cc.poll();
-	ASSERT_STREQ(message,"hello world");
+	ASSERT_STREQ(message.c_str(),"hello world\r\n\r\n");
 }
 
 TEST(ClientConnection, ClientResponse) {
 	char test_buffer[ BSIZE ];
-	ClientConnection cc = new ClientConnection(NULL,test_buffer);
+	ClientConnection cc (NULL,test_buffer);
 	
 	cc.send("hello world");
 	
