@@ -1,0 +1,14 @@
+1. Setup gtest
+command: make init
+
+2. Build test application
+command: make
+
+3. Run automated test application
+command: ./mmp_c5_tests
+
+4. Build decision tree (BY HAND)
+command: ../c5_source/c5.0 -f mmp
+
+5. Run decision tree on data from file march_madness.cases (BY HAND)
+command: ./given_c5_runner -f mmp
