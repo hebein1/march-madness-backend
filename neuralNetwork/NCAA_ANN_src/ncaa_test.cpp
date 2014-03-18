@@ -20,7 +20,6 @@ void print_rank()
 	map<char *, int>::const_iterator it;
 	for(it = team_rank.begin(); it != team_rank.end(); ++it)
 	{
-		//printf("%s => %d\n", it->first, it->second);
 		result_map[it->second] = it->first;
 	}
 
@@ -78,7 +77,6 @@ void parse_teams(char * fileName)
 int main()
 {
 	parse_teams("teams.txt");
-	printf("YEAH\n");
 	fann_type *calc_out;
 	unsigned int i;
 	int ret = 0;
@@ -108,7 +106,7 @@ int main()
 	{
 		fann_reset_MSE(ann);
 		calc_out = fann_test(ann, data->input[i], data->output[i]);
-		//calc_rank_pred = fann_test(ann, );
+
 		//printf("Matchup scores test (%f, %f) -> %f, should be %f, difference=%f\n",
 		//	   data->input[i][0], data->input[i][1], calc_out[0], data->output[i][0],
 		//	   (float) fann_abs(calc_out[0] - data->output[i][0]));
@@ -125,7 +123,6 @@ int main()
 		{
 			if(strcmp(it_team1->first, it_team2->first) != 0)
 			{
-				//fann_type * stat_input = (fann_type *) malloc((sizeof(it_team1->second) + sizeof(it_team2->second)) * sizeof(fann_type));
 				fann_type stat_input[(it_team1->second).size() + (it_team2->second).size()];
 				int j = 0;
 				for(j = 0; j<(it_team1->second).size(); j++)
