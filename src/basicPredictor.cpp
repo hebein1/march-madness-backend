@@ -1,10 +1,14 @@
 #include <iostream>
 #include <cstring>
+#include "clientconnection.h"
 
 using namespace std;
 
 int main()
 {
+	ClientConnection cc;
+	cc.begin();
+
 	string team1;
 	string team2;
 	cout << "Input team 1:\n";
@@ -16,4 +20,5 @@ int main()
 		cout << team2 + " wins\n";
 	else
 		cout << team1 + " wins\n";
+	cc.disconnect();
 }

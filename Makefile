@@ -1,4 +1,5 @@
 # This is the makefile for the March Madness Engine
+SRC_DIR=src
 LIB_DIR=lib
 BIN_DIR=bin
 GTEST_DIR=gtest-1.7.0
@@ -34,7 +35,7 @@ predictor.o:
 	g++ -o predictor.o -c basicPredictor.cpp
 
 dbc.o: dbc.cpp dbc.h
-	g++ -std=c++0x ${C_FLAGS} -c dbc.cpp
+	g++ -std=c++0x ${C_FLAGS} -o dbc.o -c dbc.cpp
 
 # Destroy object files
 clean:
