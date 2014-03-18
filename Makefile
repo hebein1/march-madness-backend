@@ -7,7 +7,7 @@ CLEAN_FILES=dbctest.o predictor.o dbc.o dbc dbctests mmetests mme
 C_FLAGS=-lsqlite3
 
 # Default functionality should be to build the program and tests
-all: mmetests mme 
+all: mmetests 
 
 # To build the gtest library run init once
 init : gtest

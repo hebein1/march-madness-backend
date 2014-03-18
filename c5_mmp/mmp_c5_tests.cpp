@@ -32,13 +32,15 @@ TEST(MMP, buildTreeCheck)
 TEST(MMP, singleMatchupCheck)
 {
 	// run a single matchup
-	std::string result = runMatchup("T1","T2");
+	std::string t1 = "Vermont";
+	std::string t2 = "Stony Brook";
+	std::string result = runMatchup(t1,t2);
 
 	// check that a winner was selected
-	ASSERT_TRUE(result == "T1" || result == "T2");
+	ASSERT_TRUE(result == t1 || result == t2);
 
 	// print winner
-	std::cout << "\nResult of matchup T1 vs. T2... " << result << " wins\n\n";
+	std::cout << "\nResult of matchup " << t1 << " vs. " << t2 << "... " << result << " wins\n\n";
 }
 
 /*
@@ -50,7 +52,7 @@ TEST(MMP, allMatchupsCheck)
 	std::vector<std::pair<std::string, int> > results = runAllMatchups();
 
 	// check that results were generated
-	ASSERT_TRUE(!results.empty());
+	ASSERT_TRUE(results.size() == 351);
 
 	// print the results of all the matchups in decending order
 	std::sort(results.begin(), results.end(), sort_pred());

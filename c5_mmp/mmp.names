@@ -1,5 +1,84 @@
 winner.
 
-team_A_score: continuous.
-team_B_score: continuous.
+team_A_fgm: continuous.
+team_A_fga: continuous.
+team_A_fgp: continuous.
+team_A_twom: continuous.
+team_A_twoa: continuous.
+team_A_twop: continuous.
+team_A_threem: continuous.
+team_A_threea: continuous.
+team_A_threep: continuous.
+team_A_ftm: continuous.
+team_A_fta: continuous.
+team_A_ftp: continuous.
+team_A_offreb: continuous.
+team_A_defreb: continuous.
+team_A_totalreb: continuous.
+team_A_pps: continuous.
+team_A_adjfg: continuous.
+team_A_assist: continuous.
+team_A_to: continuous.
+team_A_apto: continuous.
+team_A_steals: continuous.
+team_A_fouls: continuous.
+team_A_stealpto: continuous.
+team_A_stealpf: continuous.
+team_A_blocks: continuous.
+team_A_blockspf: continuous.
+
+team_B_fgm: continuous.
+team_B_fga: continuous.
+team_B_fgp: continuous.
+team_B_twom: continuous.
+team_B_twoa: continuous.
+team_B_twop: continuous.
+team_B_threem: continuous.
+team_B_threea: continuous.
+team_B_threep: continuous.
+team_B_ftm: continuous.
+team_B_fta: continuous.
+team_B_ftp: continuous.
+team_B_offreb: continuous.
+team_B_defreb: continuous.
+team_B_totalreb: continuous.
+team_B_pps: continuous.
+team_B_adjfg: continuous.
+team_B_assist: continuous.
+team_B_to: continuous.
+team_B_apto: continuous.
+team_B_steals: continuous.
+team_B_fouls: continuous.
+team_B_stealpto: continuous.
+team_B_stealpf: continuous.
+team_B_blocks: continuous.
+team_B_blockspf: continuous.
+
+fgm_diff := team_A_fgm - team_B_fgm.
+fga_diff := team_A_fga - team_B_fga.
+fgp_diff := team_A_fgp - team_B_fgp.
+twom_diff := team_A_twom - team_B_twom.
+twoa_diff := team_A_twoa - team_B_twoa.
+twop_diff := team_A_twop - team_B_twop.
+threem_diff := team_A_threem - team_B_threem.
+threea_diff := team_A_threea - team_B_threea.
+threep_diff := team_A_threep - team_B_threep.
+ftm_diff := team_A_ftm - team_B_ftm.
+fta_diff := team_A_fta - team_B_fta.
+ftp_diff := team_A_ftp - team_B_ftp.
+offreb_diff := team_A_offreb - team_B_offreb.
+defreb_diff := team_A_defreb - team_B_defreb.
+totalreb_diff := team_A_totalreb - team_B_totalreb.
+pps_diff := team_A_pps - team_B_pps.
+adjfg_diff := team_A_adjfg - team_B_adjfg.
+assist_diff := team_A_assist - team_B_assist.
+to_diff := team_A_to - team_B_to.
+apto_diff := team_A_apto - team_B_apto.
+steals_diff := team_A_steals - team_B_steals.
+fouls_diff := team_A_fouls - team_B_fouls.
+stealpto_diff := team_A_stealpto - team_B_stealpto.
+stealpf_diff := team_A_stealpf - team_B_stealpf.
+blocks_diff := team_A_blocks - team_B_blocks.
+blockspf_diff := team_A_blockspf - team_B_blockspf.
+
 winner: A, B.
