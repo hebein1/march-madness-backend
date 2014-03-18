@@ -11,10 +11,10 @@ int FANN_API test_callback(struct fann *ann, struct fann_train_data *train,
 int main()
 {
 	fann_type *calc_out;
-	const unsigned int num_input = 2;
+	const unsigned int num_input = 52;
 	const unsigned int num_output = 1;
 	const unsigned int num_layers = 3;
-	const unsigned int num_neurons_hidden = 4;
+	const unsigned int num_neurons_hidden = 20;
 	const float desired_error = (const float) 0;
 	const unsigned int max_epochs = 5000;
 	const unsigned int epochs_between_reports = 10;
