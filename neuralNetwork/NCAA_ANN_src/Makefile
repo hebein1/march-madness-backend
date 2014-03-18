@@ -1,4 +1,4 @@
-GCC=gcc
+GCC=g++
 
 TARGETS = ncaa_train ncaa_test
 
@@ -19,10 +19,10 @@ ann_test: ncaa_train.cpp ncaa_train.o
 	g++ -isystem ${PWD}/../../${GTEST_DIR}/include -c annTest.cpp 
 	g++ -isystem ${PWD}/../../${GTEST_DIR}/include -pthread annTest.o \
 		${PWD}/../../${GTEST_DIR}/src/gtest_main.cc libgtest.a \
-		-lfann -lm -o ann_test
+		-lfann -lm -Wall -Wextra -lstdc++ -g -o ann_test
 
 %: %.cpp Makefile
-	$(GCC) -O3 $< -o $@ -lfann -lm
+	$(GCC) -O3 $< -o $@ -lfann -lm -Wall -Wextra -g
 
 clean:
 	rm -f $(TARGETS) ann_test *.net *~ *.obj *.exe *.tds *.o
