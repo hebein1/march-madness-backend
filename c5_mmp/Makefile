@@ -1,21 +1,21 @@
-LIB_DIR=lib
-GTEST_DIR=${LIB_DIR}/gtest-1.7.0
-CLEAN_FILES=sample sample_test sample_test.o
+LIB_DIR = lib
+GTEST_DIR = ${LIB_DIR}/gtest-1.7.0
+CLEAN_FILES = given_c5_runner mmp_c5_tests mmp_c5_tests.o
 
-all: sample sample_test
+all: given_c5_runner mmp_c5_tests
 
 init : gtest
 
 gtest:
-	g++ -isystem ${PWD}/../${GTEST_DIR}/include -I ${PWD}/../${GTEST_DIR} -pthread -c ${PWD}/../${GTEST_DIR}/src/gtest-all.cc 
+	g++ -isystem ${PWD}/../${GTEST_DIR}/include -I ${PWD}/../${GTEST_DIR} -pthread -c ${PWD}/../${GTEST_DIR}/src/gtest-all.cc
 	ar -rv libgtest.a gtest-all.o
 
-sample:
-	gcc sample.c -lm -o sample
+given_c5_runner:
+	gcc given_c5_runner.c -lm -o given_c5_runner
 
-sample_test: sample_test.cpp
-	g++ -isystem ${PWD}/../${GTEST_DIR}/include -c sample_test.cpp
-	g++ -isystem ${PWD}/../${GTEST_DIR}/include -pthread sample_test.o ${PWD}/../${GTEST_DIR}/src/gtest_main.cc libgtest.a -o sample_test
+mmp_c5_tests:
+	g++ -isystem ${PWD}/../${GTEST_DIR}/include -c mmp_c5_tests.cpp
+	g++ -isystem ${PWD}/../${GTEST_DIR}/include -pthread mmp_c5_tests.o ${PWD}/../${GTEST_DIR}/src/gtest_main.cc libgtest.a -o mmp_c5_tests
 
 clean:
 	rm -f ${CLEAN_FILES}

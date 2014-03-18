@@ -54,9 +54,9 @@
 /*									 */
 /*************************************************************************/
 
-#include "defns.h"
-#include "global.c"
-#include "hooks.c"
+#include "given_c5_defns.h"
+#include "given_c5_global.c"
+#include "given_c5_hooks.c"
 
 
 
