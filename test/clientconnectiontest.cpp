@@ -11,6 +11,10 @@ TEST(ClientConnection, Connect) {
 	ClientConnection cc;
 	EXPECT_TRUE(cc.startConnection());
 	EXPECT_TRUE(cc.getIsConnected());
+	
+	string * message = cc.getMessage();
+	EXPECT_STREQ(message->c_str(),"hello");
+
 	cc.endConnection();
 	EXPECT_FALSE(cc.getIsConnected());
 }

@@ -71,7 +71,7 @@ void ClientConnection::checkMessages() {
 	buff[ClientConnection::BUFFSIZE - 1] = '\0';
 	int n;
 	if (this->instream == NULL) {
-		n = recv(sockfd,buff,ClientConnection::BUFFSIZE - 1,MSG_DONTWAIT);
+		n = read(sockfd,buff,ClientConnection::BUFFSIZE - 1);
 	} else {
 		n = strlen(this->instream);
 		strncpy(buff,this->instream,n);

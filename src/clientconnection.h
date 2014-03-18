@@ -17,7 +17,7 @@ using namespace std;
 class ClientConnection
 {
 	static const int BUFFSIZE = 4096;
-	static const int PORTNUM = 3000;
+	static const int PORTNUM = 2000;
 	static const string SERVERNAME;
 	int sockfd;
 	bool isConnected;

@@ -7,7 +7,7 @@ using namespace std;
 int main()
 {
 	ClientConnection cc;
-	cc.begin();
+	cc.startConnection();
 
 	string team1;
 	string team2;
@@ -20,5 +20,5 @@ int main()
 		cout << team2 + " wins\n";
 	else
 		cout << team1 + " wins\n";
-	cc.disconnect();
+	cc.endConnection();
 }
