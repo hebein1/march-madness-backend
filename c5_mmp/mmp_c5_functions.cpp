@@ -87,7 +87,7 @@ std::vector<std::pair<std::string, int> > runAllMatchups()
 {
 	// read team data from .avgs
 	int team_data_index = 0;
-	std::string team_data[3];
+	std::string team_data[351];
 	std::ifstream infile("mmp.avgs");
 	std::string line;
 	while (std::getline(infile, line))
@@ -100,9 +100,9 @@ std::vector<std::pair<std::string, int> > runAllMatchups()
 	FILE* cases_file = fopen ("mmp.cases" , "w+");
 	std::string t1_data;
 	std::string t2_data;
-	for(int t1 = 0; t1 < 3; t1++)
+	for(int t1 = 0; t1 < 351; t1++)
 	{
-		for(int t2 = 0; t2 < 3; t2++)
+		for(int t2 = 0; t2 < 351; t2++)
 		{
 			if(t1 != t2)
 			{
@@ -152,7 +152,7 @@ std::vector<std::pair<std::string, int> > runAllMatchups()
 
 		matchup_count++;
 
-		if(matchup_count == 2)
+		if(matchup_count == 350)
 		{
 			team_index++;
 			new_team = true;
