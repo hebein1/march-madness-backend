@@ -50,17 +50,20 @@ bool ClientConnection::startConnection() {
     return this->isConnected;
 }
 
-void ClientConnection::pushMessageOnQueue(char * buff, int n) {
+bool ClientConnection::pushMessageOnQueue(char * buff, int n) {
 	int last = 0;
 	int x;
-	for (x = 0; x < n; x++) {
+	bool complete = true;
+	for (x = 0; x < n; x++) {	
+		complete = false;
 		if(strncmp(buff + x, "\r\n\r\n",4) == 0) {
 			this->messages.push(new string(buff + last,x - last));
 			x += 4;
 			last = x;
+			complete = true;
 		}
 	}
-
+	return complete;
 }
 
 void ClientConnection::checkMessages() {	
@@ -68,12 +71,16 @@ void ClientConnection::checkMessages() {
 	buff[ClientConnection::BUFFSIZE - 1] = '\0';
 	int n;
 	if (this->instream == NULL) {
-		n = read(sockfd,buff,ClientConnection::BUFFSIZE - 1);
+		n = recv(sockfd,buff,ClientConnection::BUFFSIZE - 1,MSG_DONTWAIT);
 	} else {
 		n = strlen(this->instream);
 		strncpy(buff,this->instream,n);
 	}
-	pushMessageOnQueue(buff,n);
+	if (n < 1) { 
+		// do not push messages
+	} else {
+		pushMessageOnQueue(buff,n); //don't worry about it for now
+	}
 }
 
 void ClientConnection::endConnection() {

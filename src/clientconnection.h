@@ -24,7 +24,7 @@ class ClientConnection
 	char * instream;
 	char * outstream;
 	queue<string *> messages;
-	void pushMessageOnQueue(char * buff,int n);
+	bool pushMessageOnQueue(char * buff,int n);
 public:
 	ClientConnection() : isConnected(false), instream(NULL), outstream(NULL){}
 	ClientConnection(char * in, char * out) : isConnected(true), instream(in), outstream(out) {}
