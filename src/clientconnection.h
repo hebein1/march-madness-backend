@@ -10,25 +10,30 @@
 #include <netinet/in.h>
 #include <netdb.h>
 #include <string>
+#include <queue>
 
 using namespace std;
 
 class ClientConnection
 {
+	static const int BUFFSIZE = 4096;
 	static const int PORTNUM = 3000;
 	static const string SERVERNAME;
 	int sockfd;
 	bool isConnected;
 	char * instream;
 	char * outstream;
+	queue<string *> messages;
+	void pushMessageOnQueue(char * buff,int n);
 public:
-	ClientConnection() : isConnected(false), instream(new char[4096]), outstream(new char[4096]) {}
-	ClientConnection(char * in, char * out) : isConnected(false), instream(in), outstream(out) {}
-	~ClientConnection() { delete[] instream; delete[] outstream; }
-	bool begin();
-	void disconnect();
+	ClientConnection() : isConnected(false), instream(NULL), outstream(NULL){}
+	ClientConnection(char * in, char * out) : isConnected(true), instream(in), outstream(out) {}
+	bool startConnection();
+	void endConnection();
 	bool getIsConnected() { return isConnected; }
-	string poll();
+	int poll();
+	string * getMessage();
+	void checkMessages();
 	bool send(string message);
 };
 #endif

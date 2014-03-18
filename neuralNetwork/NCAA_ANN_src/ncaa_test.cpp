@@ -11,7 +11,7 @@
 using namespace std;
 
 map<string, int> team_rank;
-map<string, vector<int> > team_stats;
+map<string, vector<float> > team_stats;
 	
 
 void print_rank()
@@ -22,12 +22,12 @@ void print_rank()
 	for(it = team_rank.begin(); it != team_rank.end(); ++it)
 	{
 		//printf("%s => %d\n", (it->first).c_str(), it->second);
-		map<int, vector<string> >::const_iterator search = result_map.find(it->second);
+		map<int, vector<string> >::const_iterator search = result_map.find((-1)*it->second);
 		if(search == result_map.end())
 		{
 			vector<string> s;
 			s.push_back(it->first);
-			result_map[it->second] = s;
+			result_map[(-1)*it->second] = s;
 		}
 		else
 		{
@@ -39,13 +39,14 @@ void print_rank()
 
 	int i = 0;
 	map<int, vector<string> >::const_iterator result_it;
+	printf("RANKING:\n");
 	for(result_it = result_map.begin(); result_it != result_map.end(); ++result_it)
 	{
 		vector<string>::const_iterator it_vec;
                 for(it_vec = (result_it->second).begin(); it_vec != (result_it->second).end(); ++it_vec)
                 {
      			i++;
-			printf("%d. %s => %d\n", i, (*it_vec).c_str(), result_it->first);
+			printf("%d. %s => %d\n", i, (*it_vec).c_str(), (-1)*result_it->first);
 		}
 	}
 }
@@ -72,19 +73,18 @@ void parse_teams(char * fileName)
 		}
 		else
 		{
-			vector<int> avg_stats;
+			vector<float> avg_stats;
 			pch = strtok(line, " ");
 			while(pch != NULL)
                 	{
-				int stat = 0;
+				float stat = 0.0;
                                 istringstream (pch) >> stat;
 				avg_stats.push_back(stat);	
                         
                         	pch = strtok(NULL, " ");
 			}
 			pch_flag = 0;	
-               		printf("TEAM: %s\n", team_name.c_str());
-			team_rank[team_name] = 0;
+               		team_rank[team_name] = 0;
 			team_stats[team_name] = avg_stats;
 		}
 		
@@ -134,10 +134,10 @@ int main()
 			num_test_passed++;
 	}
 
-	map<string, vector<int> >::const_iterator it_team1;
+	map<string, vector<float> >::const_iterator it_team1;
 	for(it_team1 = team_stats.begin(); it_team1 != team_stats.end(); ++it_team1)
 	{
-		map<string, vector<int> >::const_iterator it_team2;
+		map<string, vector<float> >::const_iterator it_team2;
 		for(it_team2 = team_stats.begin(); it_team2 != team_stats.end(); ++it_team2)
 		{
 			if(it_team1->first != it_team2->first)
@@ -154,21 +154,38 @@ int main()
 				}
 				
 				fann_type * const calc_team_score = fann_run(ann, stat_input);
+				
 				if(calc_team_score[0] < 0.5)
-				{
+				{	
 					//team 2 won
-					team_rank[it_team2->first] += 1;
-
+					map<string, int>::const_iterator team2_search = team_rank.find(it_team2->first);
+					if(team2_search != team_rank.end())
+					{
+						team_rank[it_team2->first] = (team2_search->second) + 1;
+					}
+					
 					//team 1 lost
-					team_rank[it_team1->first] -= 1;
+					map<string, int>::const_iterator team1_search = team_rank.find(it_team1->first);
+					if(team1_search != team_rank.end())
+					{
+						team_rank[it_team1->first] = (team1_search->second) - 1;
+					}
 				}
 				else
 				{	
 					//team 2 lost
-					team_rank[it_team2->first] -= 1;
+					map<string, int>::const_iterator team2_search = team_rank.find(it_team2->first);
+					if(team2_search != team_rank.end())
+					{
+						team_rank[it_team2->first] = (team2_search->second) - 1;
+					}
 
 					//team 1 won
-					team_rank[it_team1->first] += 1;
+					map<string, int>::const_iterator team1_search = team_rank.find(it_team1->first);
+					if(team1_search != team_rank.end())
+					{
+						team_rank[it_team1->first] = (team1_search->second) + 1;
+					}
 				}
 			}
 		}
