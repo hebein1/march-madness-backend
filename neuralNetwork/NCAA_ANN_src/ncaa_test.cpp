@@ -4,31 +4,49 @@
 #include <unistd.h>
 #include <map>
 #include <vector>
+#include <string>
 #include <sstream>
 #include "fann.h"
 
 using namespace std;
 
-map<char *, int> team_rank;
-map<char *, vector<int> > team_stats;
+map<string, int> team_rank;
+map<string, vector<int> > team_stats;
 	
 
 void print_rank()
 {
-	map<int, char *> result_map;	
+	map<int, vector<string> > result_map;	
 
-	map<char *, int>::const_iterator it;
+	map<string, int>::const_iterator it;
 	for(it = team_rank.begin(); it != team_rank.end(); ++it)
 	{
-		result_map[it->second] = it->first;
+		//printf("%s => %d\n", (it->first).c_str(), it->second);
+		map<int, vector<string> >::const_iterator search = result_map.find(it->second);
+		if(search == result_map.end())
+		{
+			vector<string> s;
+			s.push_back(it->first);
+			result_map[it->second] = s;
+		}
+		else
+		{
+			vector<string> old_s = search->second;
+			old_s.push_back(it->first);
+			result_map[search->first] = old_s;
+		}
 	}
 
 	int i = 0;
-	map<int, char *>::const_iterator result_it;
+	map<int, vector<string> >::const_iterator result_it;
 	for(result_it = result_map.begin(); result_it != result_map.end(); ++result_it)
 	{
-		i++;
-		printf("%d. %s => %d\n", i, result_it->second, result_it->first);
+		vector<string>::const_iterator it_vec;
+                for(it_vec = (result_it->second).begin(); it_vec != (result_it->second).end(); ++it_vec)
+                {
+     			i++;
+			printf("%d. %s => %d\n", i, (*it_vec).c_str(), result_it->first);
+		}
 	}
 }
 
@@ -43,34 +61,35 @@ void parse_teams(char * fileName)
         size_t read;
 	char * pch;
        	int pch_flag = 0;
+	string team_name;
 	while ((read = getline(&line, &len, teams_file)) != -1)
         {
-		char * team_name = NULL;
-		vector<int> avg_stats;
-		pch = strtok(line, " ");
-		while(pch != NULL)
-                {
-                        if(pch_flag == 0)
-                        {
-				team_name = new char[strlen(pch) + 1];
-                            	strcpy(team_name, pch);
-                                printf("TEAM: %s\n", team_name);
-				pch_flag = 1;
-                        }
-                        else if(pch_flag == 1)
-                        {
+	
+		if(pch_flag == 0)
+		{
+			team_name  = string(line, strlen(line)-1);
+			pch_flag = 1;
+		}
+		else
+		{
+			vector<int> avg_stats;
+			pch = strtok(line, " ");
+			while(pch != NULL)
+                	{
 				int stat = 0;
                                 istringstream (pch) >> stat;
-				avg_stats.push_back(stat);
-                        }
-                        pch = strtok(NULL, " ");
-                }
-		team_rank[team_name] = 0;
-		team_stats[team_name] = avg_stats;
-		pch_flag = 0;
-		free(team_name);
+				avg_stats.push_back(stat);	
+                        
+                        	pch = strtok(NULL, " ");
+			}
+			pch_flag = 0;	
+               		printf("TEAM: %s\n", team_name.c_str());
+			team_rank[team_name] = 0;
+			team_stats[team_name] = avg_stats;
+		}
+		
 	}
-
+	
 	//print_rank();
 }
 
@@ -115,13 +134,13 @@ int main()
 			num_test_passed++;
 	}
 
-	map<char *, vector<int> >::const_iterator it_team1;
+	map<string, vector<int> >::const_iterator it_team1;
 	for(it_team1 = team_stats.begin(); it_team1 != team_stats.end(); ++it_team1)
 	{
-		map<char *, vector<int> >::const_iterator it_team2;
+		map<string, vector<int> >::const_iterator it_team2;
 		for(it_team2 = team_stats.begin(); it_team2 != team_stats.end(); ++it_team2)
 		{
-			if(strcmp(it_team1->first, it_team2->first) != 0)
+			if(it_team1->first != it_team2->first)
 			{
 				fann_type stat_input[(it_team1->second).size() + (it_team2->second).size()];
 				int j = 0;
