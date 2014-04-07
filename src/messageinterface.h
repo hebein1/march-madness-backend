@@ -7,7 +7,7 @@ class MessageInterface
 	ClientConnection * connection;
 public:
 	MessageInterface(ClientConnection * c): connection(c) {}
-	void send(string winner);
+	void sendWinner(string winner);
 	void getTeams(string * team1, string * team2);
 	void parse(string * team1, string * team2, string * content);
 	string format(string winner);

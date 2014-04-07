@@ -4,7 +4,7 @@ string MessageInterface::format(string team) {
 	return "winner:" + team;
 }
 
-void MessageInterface::send(string winner) {
+void MessageInterface::sendWinner(string winner) {
 	string message = format(winner);
 	this->connection->send(message);
 }
