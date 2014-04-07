@@ -34,7 +34,7 @@ test: $(BINDIR)/$(T_TARGET)
 	@echo "Test binary complete!"
 
 $(BINDIR)/$(T_TARGET): $(T_OBJS) $(OBJECTS)
-	@$(LINKER) $@ $(TLFLAGS) $(T_OBJS) ../obj/clientconnection.o 
+	@$(LINKER) $@ $(TLFLAGS) $(T_OBJS) ../obj/clientconnection.o ../obj/messageinterface.o
 	@echo "Linking tests complete!"
 
 $(T_OBJS): $(OBJDIR)/%.o : $(TESTDIR)/%.cpp

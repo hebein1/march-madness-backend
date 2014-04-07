@@ -56,9 +56,9 @@ bool ClientConnection::pushMessageOnQueue(char * buff, int n) {
 	bool complete = true;
 	for (x = 0; x < n; x++) {	
 		complete = false;
-		if(strncmp(buff + x, "\r\n\r\n",4) == 0) {
+		if(strncmp(buff + x, "\r\n",2) == 0) {
 			this->messages.push(new string(buff + last,x - last));
-			x += 4;
+			x += 2;
 			last = x;
 			complete = true;
 		}
@@ -100,9 +100,8 @@ int ClientConnection::poll() {
  * YOU MUST DELETE ANY MESSAGES YOU RECEIVE
  */
 string * ClientConnection::getMessage() {
-	checkMessages(); // add messages from socket onto queue
-	if (this->messages.size() == 0) {
-		return NULL;
+	while (this->messages.size() == 0) {
+		checkMessages(); // add messages from socket onto queue
 	}
 	string * message = messages.front();
 	this->messages.pop();
@@ -111,7 +110,7 @@ string * ClientConnection::getMessage() {
 
 bool ClientConnection::send(string message) {
 	int n = 0;
-	message.append("\r\n\r\n");
+	message.append("\r\n");
 	if (this->outstream == NULL) { 
 		write(sockfd,message.c_str(),message.length());	
 	} else { // for testing purposes do not send over socket

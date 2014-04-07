@@ -7,13 +7,22 @@
 #include <cstring>
 
 
-TEST(ClientConnection, Connect) {
+TEST(IntegrationConnection, Connect) {
 	ClientConnection cc;
 	EXPECT_TRUE(cc.startConnection());
-	EXPECT_TRUE(cc.getIsConnected());
+	ASSERT_TRUE(cc.getIsConnected());
 	
 	string * message = cc.getMessage();
-	EXPECT_STREQ(message->c_str(),"hello");
+	EXPECT_STREQ(message->c_str(),"illinois:michigan");
+	cc.send("illinois");
+
+	message = cc.getMessage();
+	EXPECT_STREQ(message->c_str(),"illinois:san jose");
+	cc.send("san jose");
+
+	message = cc.getMessage();
+	EXPECT_STREQ(message->c_str(),"illinois:arizona");
+	cc.send("arizona");
 
 	cc.endConnection();
 	EXPECT_FALSE(cc.getIsConnected());
@@ -21,7 +30,7 @@ TEST(ClientConnection, Connect) {
 
 TEST(ClientConnection, ServerRequest) {
 	char test_buffer [ BSIZE ];
-	string input = "hello world\r\n\r\ntest1\r\n\r\n3total\r\n\r\n";
+	string input = "hello world\r\ntest1\r\n3total\r\n";
 
 	std::strcpy(test_buffer,input.c_str());
 	
@@ -48,7 +57,7 @@ TEST(ClientConnection, ClientResponse) {
 	cc.send(message);
 	
 	//additional formating
-	test_buffer[message.length() + 4] = '\0';
-	ASSERT_STREQ(test_buffer,"hello world\r\n\r\n");
+	test_buffer[message.length() + 2] = '\0';
+	ASSERT_STREQ(test_buffer,"hello world\r\n");
 	
 }
