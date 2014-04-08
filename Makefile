@@ -28,11 +28,20 @@ dbctests: dbctest.cpp dbc.o
 		-lsqlite3 -o mmetests
 
 # This is the March Madness Engine builder
-mme: predictor.o dbc.o
-	g++ ${C_FLAGS} -o mme predictor.o
+mme: predictor.o dbc.o clientconnection.o messageinterface.o  mmp_c5_functions.o
+	g++ ${C_FLAGS} -o mme predictor.o dbc.o clientconnection.o messageinterface.o mmp_c5_functions.o neuralNetwork/NCAA_ANN_src/ncaa_test.o neuralNetwork/NCAA_ANN_src/ncaa_train.o -lfann -lsqlite3 
 
-predictor.o:
-	g++ -o predictor.o -c basicPredictor.cpp
+mmp_c5_functions.o: c5_mmp/mmp_c5_functions.o
+	g++ -o mmp_c5_functions.o -c c5_mmp/mmp_c5_functions.cpp
+
+predictor.o: ${SRC_DIR}/basicpredictor.cpp
+	g++ -o predictor.o -c ${SRC_DIR}/basicPredictor.cpp
+
+clientconnection.o: ${SRC_DIR}/clientconnection.cpp
+	g++ -o clientconnection.o -c ${SRC_DIR}/clientconnection.cpp
+
+messageinterface.o: ${SRC_DIR}/messageinterface.cpp
+	g++ -o messageinterface.o -c ${SRC_DIR}/messageinterface.cpp
 
 dbc.o: dbc.cpp dbc.h
 	g++ -std=c++0x ${C_FLAGS} -o dbc.o -c dbc.cpp
