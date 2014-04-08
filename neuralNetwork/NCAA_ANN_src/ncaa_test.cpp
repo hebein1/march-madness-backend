@@ -19,7 +19,7 @@ string Tester::getPrediction(string team1,string team2)
 
 	printf("Testing network.\n");
 
-	data = fann_read_train_from_file("ncaaTest.data");
+	data = fann_read_train_from_file("ncaa.data");
 
 	map<string, vector<float> >::const_iterator it_team1 = team_stats.find(team1);	
 	if(it_team1 != team_stats.end())
