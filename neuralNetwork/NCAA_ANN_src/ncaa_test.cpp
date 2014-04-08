@@ -4,18 +4,14 @@ string Tester::getPrediction(string team1,string team2)
 {
 	parse_teams("teams.txt");
 	fann_type *calc_out;
-	unsigned int i;
-	int ret = 0;
-	int num_test_passed = 0;
-	int num_total_tests = 0;
-	
+
 	printf("Creating network.\n");
 	ann = fann_create_from_file("ncaa_float.net");
 
 	if(!ann)
 	{
 		printf("Error creating ann --- ABORTING.\n");
-		return -1;
+		return "Error with network\n";
 	}
 
 	fann_print_connections(ann);
@@ -44,7 +40,6 @@ string Tester::getPrediction(string team1,string team2)
 					stat_input[j + k] = ((it_team2->second)[k]);
 				}
 				
-				//fann_type * const calc_team_score = fann_run(ann, stat_input);
 				fann_type * const calc_team_score = run_fann(ann, stat_input);				
 
 				if(calc_team_score[0] < 0.5)
