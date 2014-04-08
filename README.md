@@ -14,16 +14,11 @@ we wish to account for in the algorithm**
 
 **Build**
 * make init # compiles gtest, you only need to run this once
-* make # compiles both the engine and the unit tests
-
-**Other Commands**
-* make mme # just build the engine
-* make mmetest # just build the tests
-* make clean # remove object code not including third-parties binaries
+* cd build && make # compiles both the engine and the unit tests
 
 **Run**
-* ./mme to run the engine
-* ./mmetest to run the tests
+* ./bin/mme to run the engine (start the rails server in production mode first)
+* ./bin/mmetest to run the tests (start the rails integration test first)
 
 **Dependencies**
 * gtest 1.7.0
