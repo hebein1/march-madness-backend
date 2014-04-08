@@ -1,6 +1,6 @@
 GCC=g++
 
-TARGETS = ncaa_train ncaa_test
+TARGETS = ncaa 
 
 LIB_DIR=lib
 
@@ -17,12 +17,13 @@ gtest:
 
 ann_test: ncaa_train.cpp ncaa_train.o
 	g++ -isystem ${PWD}/../../${GTEST_DIR}/include -c annTest.cpp 
-	g++ -isystem ${PWD}/../../${GTEST_DIR}/include -pthread annTest.o \
+	g++ -isystem ${PWD}/../../${GTEST_DIR}/include -pthread annTest.o ncaa_test.o \
 		${PWD}/../../${GTEST_DIR}/src/gtest_main.cc libgtest.a \
 		-lfann -lm -Wall -Wextra -g -o ann_test
 
-%: %.cpp Makefile
-	$(GCC) -O3 $< -o $@ -lfann -lm -Wall -Wextra -g
+ncaa: ncaa_train.cpp ncaa_test.cpp Makefile
+	$(GCC) -O3 ncaa_train.cpp -o ncaa_train.o -lfann -c -lm -Wall -Wextra -g
+	$(GCC) -O3 ncaa_test.cpp -o ncaa_test.o -lfann -c -lm -Wall -Wextra -g
 
 clean:
 	rm -f $(TARGETS) ann_test *.net *~ *.obj *.exe *.tds *.o

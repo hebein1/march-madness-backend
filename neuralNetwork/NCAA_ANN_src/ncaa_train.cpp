@@ -1,6 +1,6 @@
 #include "ncaa_train.h"
 
-int FANN_API test_callback(struct fann *ann, struct fann_train_data *train,
+int Trainer::FANN_API test_callback(struct fann *ann, struct fann_train_data *train,
 	unsigned int max_epochs, unsigned int epochs_between_reports, 
 	float desired_error, unsigned int epochs)
 {
@@ -8,7 +8,7 @@ int FANN_API test_callback(struct fann *ann, struct fann_train_data *train,
 	return 0;
 }
 
-int main()
+int Trainer::train_network()
 {
 	fann_type *calc_out;
 	const unsigned int num_input = 52;
@@ -69,4 +69,3 @@ int main()
 
 	return 0;
 }
-
