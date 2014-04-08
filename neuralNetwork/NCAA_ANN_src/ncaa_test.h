@@ -16,7 +16,8 @@ using namespace std;
 class Tester
 {
 	public:
-		fann_type * const getPrediction(struct fann * ann, fann_type stat_input[]);
+		string getPrediction(string team1, string team2);
+		fann_type * const run_fann(struct fann * ann, fann_type stat_input[]);
 		void parse_teams(char * fileName);
 		void print_rank();
 		void calc_rank();
