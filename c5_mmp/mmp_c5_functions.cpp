@@ -120,12 +120,12 @@ std::vector<std::pair<std::string, int> > runAllMatchups(std::string path_to_c5_
 {
 	// read team data from .avgs
 	int team_data_index = 0;
-	std::string team_data[351];
+	std::vector<std::string> team_data;
 	std::ifstream infile((path_to_c5_mmp + "/mmp.avgs").c_str());
 	std::string line;
 	while (std::getline(infile, line))
 	{
-		team_data[team_data_index] = line;
+		team_data.push_back(line);
 		team_data_index++;
 	}
 
@@ -185,7 +185,7 @@ std::vector<std::pair<std::string, int> > runAllMatchups(std::string path_to_c5_
 
 		matchup_count++;
 
-		if(matchup_count == 350)
+		if(matchup_count == team_data.size()-1)
 		{
 			team_index++;
 			new_team = true;
