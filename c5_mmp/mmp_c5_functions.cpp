@@ -6,19 +6,28 @@
 #include <vector>
 
 /*
+ * helper sorting function
+ */
+struct sort_pred {
+    bool operator()(const std::pair<std::string,int> &left, const std::pair<std::string,int> &right) {
+		return left.second > right.second;
+    }
+};
+
+/*
  * builds a decision tree based on mmp.names & mmp.data and writes it to mmp.tree
  */
-void buildTree(bool boost)
+void buildTree(bool boost, std::string path_to_c5_mmp)
 {
 	FILE* pipe = NULL;
 
 	if(boost)
 	{
-		pipe = popen("./c5_source/c5.0 -f mmp -b", "r");
+		pipe = popen(("cd " + path_to_c5_mmp + ";" + " ./c5_source/c5.0 -f mmp -b").c_str(), "r");
 	}
 	else
 	{
-		pipe = popen("./c5_source/c5.0 -f mmp", "r");
+		pipe = popen(("cd " + path_to_c5_mmp + ";" + " ./c5_source/c5.0 -f mmp").c_str(), "r");
 	}
 
 	if(pipe)
@@ -30,10 +39,10 @@ void buildTree(bool boost)
 /*
  * runs the decision tree on two teams and returns the winner as a string
  */
-std::string runMatchup(std::string T1, std::string T2)
+std::string runMatchup(std::string T1, std::string T2, std::string path_to_c5_mmp)
 {	
 	// get team data
-	std::ifstream infile("mmp.avgs");
+	std::ifstream infile((path_to_c5_mmp + "/mmp.avgs").c_str());
 	std::string line;
 	std::string t1_data = "";
 	std::string t2_data = "";
@@ -64,7 +73,7 @@ std::string runMatchup(std::string T1, std::string T2)
 	
 
 	// wrtie data to .cases file
-	FILE* cases_file = fopen ("mmp.cases" , "w+");
+	FILE* cases_file = fopen((path_to_c5_mmp + "/mmp.cases").c_str() , "w+");
 	t1_data = t1_data.substr(t1_data.find(",") + 1);
 	t2_data = t2_data.substr(t2_data.find(",") + 1);
 	fprintf(cases_file, "%s,%s,?", t1_data.c_str(), t2_data.c_str());
@@ -73,7 +82,7 @@ std::string runMatchup(std::string T1, std::string T2)
 	// run tree
 	char buffer[128];
 	std::string result = "";
-	FILE* pipe = popen("./given_c5_runner -f mmp", "r");
+	FILE* pipe = popen(("cd " + path_to_c5_mmp + ";" + " ./given_c5_runner -f mmp").c_str(), "r");
 	if(pipe)
 	{
 		while(!feof(pipe)) {
@@ -107,12 +116,12 @@ std::string runMatchup(std::string T1, std::string T2)
 /*
  * runs the decision tree on all possible matchups and returns the result as a vector of paris <team_name, wins>
  */
-std::vector<std::pair<std::string, int> > runAllMatchups()
+std::vector<std::pair<std::string, int> > runAllMatchups(std::string path_to_c5_mmp)
 {
 	// read team data from .avgs
 	int team_data_index = 0;
 	std::string team_data[351];
-	std::ifstream infile("mmp.avgs");
+	std::ifstream infile((path_to_c5_mmp + "/mmp.avgs").c_str());
 	std::string line;
 	while (std::getline(infile, line))
 	{
@@ -121,7 +130,7 @@ std::vector<std::pair<std::string, int> > runAllMatchups()
 	}
 
 	// set up .cases file
-	FILE* cases_file = fopen ("mmp.cases" , "w+");
+	FILE* cases_file = fopen ((path_to_c5_mmp + "/mmp.cases").c_str(), "w+");
 	std::string t1_data;
 	std::string t2_data;
 	for(int t1 = 0; t1 < 351; t1++)
@@ -141,7 +150,7 @@ std::vector<std::pair<std::string, int> > runAllMatchups()
 	// run tree
 	char buffer[128];
 	std::string result = "";
-	FILE* pipe = popen("./given_c5_runner -f mmp", "r");
+	FILE* pipe = popen(("cd " + path_to_c5_mmp + ";" + " ./given_c5_runner -f mmp").c_str(), "r");
 	if(pipe)
 	{
 		while(!feof(pipe)) {

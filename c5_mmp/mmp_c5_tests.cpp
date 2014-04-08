@@ -3,21 +3,12 @@
 #include <algorithm>
 
 /*
- * helper sorting function
- */
-struct sort_pred {
-    bool operator()(const std::pair<std::string,int> &left, const std::pair<std::string,int> &right) {
-		return left.second > right.second;
-    }
-};
-
-/*
  * test buildTree() with boosting
  */
 TEST(MMP, buildTreeBoostCheck)
 {
 	// build tree
-	buildTree(true);
+	buildTree(true, ".");
 
 	// check that .tree file was generated
 	ASSERT_TRUE(access("mmp.tree", F_OK ) != -1);
@@ -29,7 +20,7 @@ TEST(MMP, buildTreeBoostCheck)
 TEST(MMP, buildTreeNormalCheck)
 {
 	// build tree
-	buildTree(false);
+	buildTree(false, ".");
 
 	// check that .tree file was generated
 	ASSERT_TRUE(access("mmp.tree", F_OK ) != -1);
@@ -43,7 +34,7 @@ TEST(MMP, runMatchupInvalidTeamOneCheck)
 	// run a single matchup
 	std::string t1 = "INVALID 1";
 	std::string t2 = "Stony Brook";
-	std::string result = runMatchup(t1,t2);
+	std::string result = runMatchup(t1,t2,".");
 
 	// check that a winner was selected
 	ASSERT_TRUE(result == "Error: could not find data for team INVALID 1");
@@ -57,7 +48,7 @@ TEST(MMP, runMatchupInvalidTeamTwoCheck)
 	// run a single matchup
 	std::string t1 = "Vermont";
 	std::string t2 = "INVALID 2";
-	std::string result = runMatchup(t1,t2);
+	std::string result = runMatchup(t1,t2,".");
 
 	// check that a winner was selected
 	ASSERT_TRUE(result == "Error: could not find data for team INVALID 2");
@@ -71,7 +62,7 @@ TEST(MMP, runMatchupInvalidTeam1Team2Check)
 	// run a single matchup
 	std::string t1 = "INVALID 1";
 	std::string t2 = "INVALID 2";
-	std::string result = runMatchup(t1,t2);
+	std::string result = runMatchup(t1,t2,".");
 
 	// check that a winner was selected
 	ASSERT_TRUE(result == "Error: could not find data for team INVALID 1 and team INVALID 2");
@@ -85,7 +76,7 @@ TEST(MMP, runMatchupValidCheck)
 	// run a single matchup
 	std::string t1 = "Vermont";
 	std::string t2 = "Stony Brook";
-	std::string result = runMatchup(t1,t2);
+	std::string result = runMatchup(t1,t2,".");
 
 	// check that a winner was selected
 	ASSERT_TRUE(result == t1 || result == t2);
@@ -100,7 +91,7 @@ TEST(MMP, runMatchupValidCheck)
 TEST(MMP, runAllMatchupsCheck)
 {
 	// run all matchups
-	std::vector<std::pair<std::string, int> > results = runAllMatchups();
+	std::vector<std::pair<std::string, int> > results = runAllMatchups(".");
 
 	// check that results were generated
 	ASSERT_TRUE(results.size() == 351);
