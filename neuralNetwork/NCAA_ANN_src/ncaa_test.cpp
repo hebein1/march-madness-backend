@@ -2,6 +2,29 @@
 
 string Tester::getPrediction(string team1,string team2)
 {
+	parse_teams("teams.txt");
+	fann_type *calc_out;
+	unsigned int i;
+	int ret = 0;
+	int num_test_passed = 0;
+	int num_total_tests = 0;
+	
+	printf("Creating network.\n");
+	ann = fann_create_from_file("ncaa_float.net");
+
+	if(!ann)
+	{
+		printf("Error creating ann --- ABORTING.\n");
+		return -1;
+	}
+
+	fann_print_connections(ann);
+	fann_print_parameters(ann);
+
+	printf("Testing network.\n");
+
+	data = fann_read_train_from_file("ncaaTest.data");
+
 	map<string, vector<float> >::const_iterator it_team1 = team_stats.find(team1);	
 	if(it_team1 != team_stats.end())
 	{
@@ -27,22 +50,36 @@ string Tester::getPrediction(string team1,string team2)
 				if(calc_team_score[0] < 0.5)
 				{	
 					//team 2 won
+					
+					printf("Cleaning up.\n");
+					fann_destroy_train(data);
+					fann_destroy(ann);
 					return team2;	
 				}
 				else
 				{	
 					//team 1 won
+					
+					printf("Cleaning up.\n");
+					fann_destroy_train(data);
+					fann_destroy(ann);
 					return team1;	
 				}
 			}
 		}
 		else
 		{
+			printf("Cleaning up.\n");
+			fann_destroy_train(data);
+			fann_destroy(ann);
 			return "Both teams are same.\n";
 		}
 	}
 	else
-	{
+	{	
+		printf("Cleaning up.\n");
+		fann_destroy_train(data);
+		fann_destroy(ann);		
 		return "One or both team names don't exist. Sorry!\n";
 	}
 
