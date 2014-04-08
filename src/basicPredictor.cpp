@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cstring>
 #include "clientconnection.h"
+#include "messageinterface.h"
 
 using namespace std;
 
@@ -8,17 +9,18 @@ int main()
 {
 	ClientConnection cc;
 	cc.startConnection();
+	MessageInterface mi(&cc);
+	string * team1 = new string();
+	string * team2 = new string();
 
-	string team1;
-	string team2;
-	cout << "Input team 1:\n";
-	cin >> team1;
-	cout << "Input team 2:\n";
-	cin >> team2;
+  while (true) {
+    mi.getTeams(team1, team2);
 
-	if(team1.length() < team2.length())
-		cout << team2 + " wins\n";
-	else
-		cout << team1 + " wins\n";
+    if(team1->length() < team2->length())
+      mi.sendWinner(*team1);
+    else
+      mi.sendWinner(*team2);
+  }
+
 	cc.endConnection();
 }
