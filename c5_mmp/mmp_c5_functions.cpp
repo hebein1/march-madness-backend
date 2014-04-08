@@ -1,18 +1,4 @@
-#include <stdio.h>
-#include <string>
-#include <fstream>
-#include <iostream>
-#include <sstream>
-#include <vector>
-
-/*
- * helper sorting function
- */
-struct sort_pred {
-    bool operator()(const std::pair<std::string,int> &left, const std::pair<std::string,int> &right) {
-		return left.second > right.second;
-    }
-};
+#include "mmp_c5_functions.h"
 
 /*
  * builds a decision tree based on mmp.names & mmp.data and writes it to mmp.tree
@@ -23,11 +9,11 @@ void buildTree(bool boost, std::string path_to_c5_mmp)
 
 	if(boost)
 	{
-		pipe = popen(("cd " + path_to_c5_mmp + ";" + " ./c5_source/c5.0 -f mmp -b").c_str(), "r");
+        pipe = popen(("cd " + path_to_c5_mmp + ";" + " ./c5_source/c5.0 -f mmp -b").c_str(), "r");
 	}
 	else
 	{
-		pipe = popen(("cd " + path_to_c5_mmp + ";" + " ./c5_source/c5.0 -f mmp").c_str(), "r");
+        pipe = popen(("cd " + path_to_c5_mmp + ";" + " ./c5_source/c5.0 -f mmp").c_str(), "r");
 	}
 
 	if(pipe)
@@ -196,3 +182,4 @@ std::vector<std::pair<std::string, int> > runAllMatchups(std::string path_to_c5_
 	// return results
 	return results;
 }
+
