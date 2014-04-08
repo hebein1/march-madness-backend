@@ -9,16 +9,8 @@ sudo make install
 
 The instructions below require you to be inside NCAA_ANN_src folder
 
-=>To install the gtest library: make init
-
-=> Regenerate data stored in ncaa.data file: ruby randomData.rb
+=> To install the gtest library: make init
 
 => Compilation: make clean && make
-
-=> Train Data: ./ncaa_train
-
-=> Test Network: ./ncaa_test
-
-=> Compile, Train and Test: make runtest
 
 NOTE: If "error while loading shared libraries: libfann.so.2: cannot open shared object" shows up run "sudo ldconfig"
