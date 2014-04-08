@@ -8,9 +8,19 @@
 /*
  * builds a decision tree based on mmp.names & mmp.data and writes it to mmp.tree
  */
-void buildTree()
+void buildTree(bool boost)
 {
-	FILE* pipe = popen("../c5_source/c5.0 -f mmp", "r");
+	FILE* pipe = NULL;
+
+	if(boost)
+	{
+		pipe = popen("./c5_source/c5.0 -f mmp -b", "r");
+	}
+	else
+	{
+		pipe = popen("./c5_source/c5.0 -f mmp", "r");
+	}
+
 	if(pipe)
 	{
 		pclose(pipe);
@@ -25,8 +35,8 @@ std::string runMatchup(std::string T1, std::string T2)
 	// get team data
 	std::ifstream infile("mmp.avgs");
 	std::string line;
-	std::string t1_data;
-	std::string t2_data;
+	std::string t1_data = "";
+	std::string t2_data = "";
 	while (std::getline(infile, line))
 	{
 		if(line.find(T1) != std::string::npos)
@@ -38,6 +48,20 @@ std::string runMatchup(std::string T1, std::string T2)
 			t2_data = line;
 		}
 	}
+
+	if(t1_data == "" && t2_data == "")
+	{
+		return "Error: could not find data for team " + T1 + " and team " + T2;
+	}
+	else if(t1_data == "")
+	{
+		return "Error: could not find data for team " + T1;
+	}
+	else if(t2_data == "")
+	{
+		return "Error: could not find data for team " + T2;
+	}
+	
 
 	// wrtie data to .cases file
 	FILE* cases_file = fopen ("mmp.cases" , "w+");

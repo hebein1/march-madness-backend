@@ -12,24 +12,75 @@ struct sort_pred {
 };
 
 /*
- * test that tree is built correctly
+ * test buildTree() with boosting
  */
-TEST(MMP, buildTreeCheck)
+TEST(MMP, buildTreeBoostCheck)
 {
 	// build tree
-	buildTree();
+	buildTree(true);
 
 	// check that .tree file was generated
 	ASSERT_TRUE(access("mmp.tree", F_OK ) != -1);
-
-	// print notification
-	std::cout << "\nTree Built\n\n";
 }
 
 /*
- * test that a single matchup can be run on the tree
+ * test buildTree() with no boosting
  */
-TEST(MMP, singleMatchupCheck)
+TEST(MMP, buildTreeNormalCheck)
+{
+	// build tree
+	buildTree(false);
+
+	// check that .tree file was generated
+	ASSERT_TRUE(access("mmp.tree", F_OK ) != -1);
+}
+
+/*
+ * test runMatchup() with invalid team 1 string
+ */
+TEST(MMP, runMatchupInvalidTeamOneCheck)
+{
+	// run a single matchup
+	std::string t1 = "INVALID 1";
+	std::string t2 = "Stony Brook";
+	std::string result = runMatchup(t1,t2);
+
+	// check that a winner was selected
+	ASSERT_TRUE(result == "Error: could not find data for team INVALID 1");
+}
+
+/*
+ * test runMatchup() with invalid team 2 string
+ */
+TEST(MMP, runMatchupInvalidTeamTwoCheck)
+{
+	// run a single matchup
+	std::string t1 = "Vermont";
+	std::string t2 = "INVALID 2";
+	std::string result = runMatchup(t1,t2);
+
+	// check that a winner was selected
+	ASSERT_TRUE(result == "Error: could not find data for team INVALID 2");
+}
+
+/*
+ * test runMatchup() with invalid team 1 string and invalid team 2 string
+ */
+TEST(MMP, runMatchupInvalidTeam1Team2Check)
+{
+	// run a single matchup
+	std::string t1 = "INVALID 1";
+	std::string t2 = "INVALID 2";
+	std::string result = runMatchup(t1,t2);
+
+	// check that a winner was selected
+	ASSERT_TRUE(result == "Error: could not find data for team INVALID 1 and team INVALID 2");
+}
+
+/*
+ * test runMatchup() with valid teams
+ */
+TEST(MMP, runMatchupValidCheck)
 {
 	// run a single matchup
 	std::string t1 = "Vermont";
@@ -44,9 +95,9 @@ TEST(MMP, singleMatchupCheck)
 }
 
 /*
- * test that all possible matchups can be run on the tree
+ * test runAllMatchups()
  */
-TEST(MMP, allMatchupsCheck)
+TEST(MMP, runAllMatchupsCheck)
 {
 	// run all matchups
 	std::vector<std::pair<std::string, int> > results = runAllMatchups();

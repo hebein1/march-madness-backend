@@ -8,7 +8,10 @@ command: make
 command: ./mmp_c5_tests
 
 4. Build decision tree (BY HAND)
-command: ../c5_source/c5.0 -f mmp
+command: ./c5_source/c5.0 -f mmp
 
-5. Run decision tree on data from file march_madness.cases (BY HAND)
+5. Test accuracy using 10 fold cross validation (BY HAND) (Note: does not generate .tree file)
+command: ./c5_source/c5.0 -f mmp -X 10
+
+6. Run decision tree on data from file march_madness.cases (BY HAND)
 command: ./given_c5_runner -f mmp

@@ -1,8 +1,8 @@
 LIB_DIR = lib
 GTEST_DIR = ${LIB_DIR}/gtest-1.7.0
-CLEAN_FILES = given_c5_runner mmp_c5_tests mmp_c5_tests.o
+CLEAN_FILES = given_c5_runner mmp_c5_tests mmp_c5_tests.o mmp.tmp mmp.tree
 
-all: given_c5_runner mmp_c5_tests
+all: clean given_c5_runner mmp_c5_tests
 
 init : gtest
 
