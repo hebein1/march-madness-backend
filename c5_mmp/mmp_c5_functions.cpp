@@ -9,11 +9,11 @@ void buildTree(bool boost, std::string path_to_c5_mmp)
 
 	if(boost)
 	{
-        pipe = popen(("cd " + path_to_c5_mmp + ";" + " ./c5_source/c5.0 -f mmp -b").c_str(), "r");
+		pipe = popen(("cd " + path_to_c5_mmp + ";" + " ./c5_source/c5.0 -f mmp -b").c_str(), "r");
 	}
 	else
 	{
-        pipe = popen(("cd " + path_to_c5_mmp + ";" + " ./c5_source/c5.0 -f mmp").c_str(), "r");
+		pipe = popen(("cd " + path_to_c5_mmp + ";" + " ./c5_source/c5.0 -f mmp").c_str(), "r");
 	}
 
 	if(pipe)
@@ -44,6 +44,7 @@ std::string runMatchup(std::string T1, std::string T2, std::string path_to_c5_mm
 		}
 	}
 
+	// error checking
 	if(t1_data == "" && t2_data == "")
 	{
 		return "Error: could not find data for team " + T1 + " and team " + T2;
@@ -56,7 +57,6 @@ std::string runMatchup(std::string T1, std::string T2, std::string path_to_c5_mm
 	{
 		return "Error: could not find data for team " + T2;
 	}
-	
 
 	// wrtie data to .cases file
 	FILE* cases_file = fopen((path_to_c5_mmp + "/mmp.cases").c_str() , "w+");
@@ -93,6 +93,12 @@ std::string runMatchup(std::string T1, std::string T2, std::string path_to_c5_mm
 		{
 			winner = T2;
 		}
+
+		// extract the confidence, possible usage for comparison with other algorithms
+		unsigned start = line.find("[") + 1;
+		unsigned end = line.find("]");
+		std::string confidence_string = line.substr(start,end-start);
+		double confidence = atof(confidence_string.c_str());
 	}
 
 	// return winner
@@ -105,23 +111,21 @@ std::string runMatchup(std::string T1, std::string T2, std::string path_to_c5_mm
 std::vector<std::pair<std::string, int> > runAllMatchups(std::string path_to_c5_mmp)
 {
 	// read team data from .avgs
-	int team_data_index = 0;
 	std::vector<std::string> team_data;
 	std::ifstream infile((path_to_c5_mmp + "/mmp.avgs").c_str());
 	std::string line;
 	while (std::getline(infile, line))
 	{
 		team_data.push_back(line);
-		team_data_index++;
 	}
 
 	// set up .cases file
 	FILE* cases_file = fopen ((path_to_c5_mmp + "/mmp.cases").c_str(), "w+");
 	std::string t1_data;
 	std::string t2_data;
-	for(int t1 = 0; t1 < 351; t1++)
+	for(int t1 = 0; t1 < team_data.size(); t1++)
 	{
-		for(int t2 = 0; t2 < 351; t2++)
+		for(int t2 = 0; t2 < team_data.size(); t2++)
 		{
 			if(t1 != t2)
 			{
