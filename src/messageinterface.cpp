@@ -4,6 +4,7 @@ string MessageInterface::format(vector<string> ranking) {
 	string buffer = "";
 	for(vector<string>::iterator it = ranking.begin(); it != ranking.end(); ++it) {
 		string content = (*it);
+		// append ":" if not the last item in the list
 		if (distance(it,ranking.end()) > 1)
 			content.append(":");
 		buffer.append(content);
