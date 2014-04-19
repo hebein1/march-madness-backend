@@ -1,17 +1,22 @@
-1. Setup gtest
+1. Build c5_source
+command: make (must be in c5_source directory)
+
+2. Setup gtest
 command: make init
 
-2. Build test application
+3. Build test application
 command: make
 
-3. Run automated test application
+4. Run automated test application
 command: ./mmp_c5_tests
 
-4. Build decision tree (BY HAND)
+---OPTIONAL---
+
+5. Build decision tree (BY HAND)
 command: ./c5_source/c5.0 -f mmp
 
-5. Test accuracy using 10 fold cross validation (BY HAND) (Note: does not generate .tree file)
+6. Test accuracy using 10 fold cross validation (BY HAND) (Note: does not generate .tree file)
 command: ./c5_source/c5.0 -f mmp -X 10
 
-6. Run decision tree on data from file march_madness.cases (BY HAND)
+7. Run decision tree on data from file march_madness.cases (BY HAND)
 command: ./given_c5_runner -f mmp

@@ -1,5 +1,5 @@
+#include "mmp_c5_functions.h"
 #include "gtest/gtest.h"
-#include "mmp_c5_functions.cpp"
 #include <algorithm>
 
 /*
@@ -93,8 +93,12 @@ TEST(MMP, runAllMatchupsCheck)
 	// run all matchups
 	std::vector<std::pair<std::string, int> > results = runAllMatchups(".");
 
+	// count teams
+	std::ifstream inFile("mmp.avgs");
+  	int num_teams = std::count(std::istreambuf_iterator<char>(inFile), std::istreambuf_iterator<char>(), '\n');
+
 	// check that results were generated
-	ASSERT_TRUE(results.size() == 351);
+	ASSERT_TRUE(results.size() == num_teams);
 
 	// print the results of all the matchups in decending order
 	std::sort(results.begin(), results.end(), sort_pred());
