@@ -4,26 +4,40 @@
 #include <fstream>
 #include <iostream>
 #include <stdio.h>
+#include <vector>
 
 TEST(MessageConnection, Send) {
-	string winner = "illinois";
+	vector<string> teams;
+	
+	const int size = 8;
+	string teamsA[] = { "ohio","michigan","alaska","test-sample",
+			"fail","random","maine","huskies" };
+	
+	for (int x = 0; x < size; x++)
+		teams[x] = teamsA[x];
+
 	MessageInterface mi(NULL);
 
-	string message = mi.format(winner);
+	string message = mi.format(teams);
 
-	EXPECT_EQ(message,"winner:illinois");
+	string expected_string = "ohio:michigan:alaska:test-sample"
+			"fail:random:maine:huskies";
+	EXPECT_EQ(message,expected_string);
 	
 }
 
 TEST(MessageConnection, Recieve) {
-	string * team1 = new string();
-	string * team2 = new string();
 	MessageInterface mi(NULL);
+	string content = "ohio:michigan:alaska:test-sample"
+			"fail:random:maine:huskies";
 	
-	string content = "michigan:illinois";
-	mi.parse(team1,team2,&content);
+	vector<string> teams = mi.parse(&content);
+	
+	const int size = 8;
+	string expected_strings[] = { "ohio","michigan","alaska","test-sample",
+			"fail","random","maine","huskies" };
+	
+	for(int x = 0; x < size; x++)
+		EXPECT_EQ(teams[x],expected_strings[x]);
 
-	EXPECT_EQ(*team1,"michigan");
-	EXPECT_EQ(*team2,"illinois");
-	
 }
