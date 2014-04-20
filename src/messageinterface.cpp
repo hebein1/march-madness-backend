@@ -2,10 +2,10 @@
 
 string MessageInterface::format(vector<string> ranking) {
 	string buffer = "";
-	for(vector<string>::iterator it = ranking.begin(); it != ranking.end(); ++it) {
-		string content = (*it);
+	for(int x = 0; x < ranking.size(); x++) {
+		string content = ranking[x];
 		// append ":" if not the last item in the list
-		if (distance(it,ranking.end()) > 1)
+		if (x < ranking.size() - 1)
 			content.append(":");
 		buffer.append(content);
 	}
@@ -26,7 +26,6 @@ vector<string> MessageInterface::getTeams() {
 
 vector<string> MessageInterface::parse(string * content) {
 	vector<string> teams;
-	vector<string>::iterator it = teams.begin();
 	int startIndex = 0;
 	bool done = false;
 	while(!done) {
@@ -35,8 +34,8 @@ vector<string> MessageInterface::parse(string * content) {
 			done = true;
 			endIndex = content->size();
 		}
-		string team = content->substr(startIndex,endIndex);
-		it = teams.insert(it,team);
+		string team = content->substr(startIndex,endIndex - startIndex);
+		teams.push_back(team);
 		startIndex = endIndex + 1;
 	}
 	return teams;

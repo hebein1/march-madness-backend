@@ -14,15 +14,15 @@ TEST(IntegrationConnection, Connect) {
 	
 	string * message = cc.getMessage();
 	EXPECT_STREQ(message->c_str(),"illinois:michigan");
-	cc.send("illinois");
+	cc.send("illinois:michigan");
 
 	message = cc.getMessage();
-	EXPECT_STREQ(message->c_str(),"illinois:san jose");
-	cc.send("san jose");
+	EXPECT_STREQ(message->c_str(),"michigan:texas:alaska");
+	cc.send("texas:alaska:michigan");
 
 	message = cc.getMessage();
-	EXPECT_STREQ(message->c_str(),"illinois:arizona");
-	cc.send("arizona");
+	EXPECT_STREQ(message->c_str(),"san jose:charleston:qdoba:a:b:c");
+	cc.send("charleston:san jose:qdoba:a:b:c");
 
 	cc.endConnection();
 	EXPECT_FALSE(cc.getIsConnected());
