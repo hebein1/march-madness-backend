@@ -33,11 +33,14 @@ int main()
     Tester tester;
 
 
-    mi.getTeams(team1, team2);
+    mi.getTeams();
     std::string c5_winner = runMatchup(*team1, *team2, "./c5_mmp");
     std::string ann_winner = tester.getPrediction(*team1, *team2);
 
-    mi.sendWinner(c5_winner);
+    std::vector<std::string> winner;
+    winner.push_back(c5_winner);
+
+    mi.sendRanking(winner);
   }
 
 	cc.endConnection();
