@@ -27,6 +27,7 @@ class Tester
 		map<string, vector<float> > team_stats;			
 
 	private:
+		float accuracy;
 		struct fann *ann;
 		struct fann_train_data *data;	
 };

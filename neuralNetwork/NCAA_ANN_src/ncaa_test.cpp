@@ -226,6 +226,11 @@ void Tester::calc_rank()
 	print_rank();
 }
 
+float Tester::get_accuracy()
+{
+	return accuracy;
+}
+
 int Tester::test_network()
 {
 	parse_teams("teams.txt");
@@ -265,7 +270,7 @@ int Tester::test_network()
 			num_test_passed++;
 	}
 
-	float accuracy = ((float)num_test_passed) / ((float) num_total_tests);
+	accuracy = ((float)num_test_passed) / ((float) num_total_tests);
 	printf("Accuracy = %f percent\n", accuracy*100.00);
 
 	printf("Cleaning up.\n");
