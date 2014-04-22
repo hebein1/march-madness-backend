@@ -5,6 +5,12 @@
  */
 void buildTree(bool boost, std::string path_to_c5_mmp)
 {
+	// error checking for /c5_source/c5.0 file and argument path_to_c5_mmp
+	if(access((path_to_c5_mmp + "/c5_source/c5.0").c_str(), F_OK ) == -1)
+	{
+		std::cout << "Error: can't find c5.0 file. either make has not been run in /c5_mmp/c5_source or the argument path_to_c5_mmp is incorrect\n";
+	}
+
 	FILE* pipe = NULL;
 
 	if(boost)
@@ -27,6 +33,12 @@ void buildTree(bool boost, std::string path_to_c5_mmp)
  */
 std::string runMatchup(std::string T1, std::string T2, std::string path_to_c5_mmp)
 {	
+	// error checking for mmp.avgs file and argument path_to_c5_mmp
+	if(access((path_to_c5_mmp + "/mmp.avgs").c_str(), F_OK ) == -1)
+	{
+		return "Error: can't find mmp.avgs file. either mmp.avgs does not exist or the argument path_to_c5_mmp is incorrect";
+	}
+
 	// get team data
 	std::ifstream infile((path_to_c5_mmp + "/mmp.avgs").c_str());
 	std::string line;
@@ -44,7 +56,7 @@ std::string runMatchup(std::string T1, std::string T2, std::string path_to_c5_mm
 		}
 	}
 
-	// error checking
+	// error checking for arguments T1 and T2
 	if(t1_data == "" && t2_data == "")
 	{
 		return "Error: could not find data for team " + T1 + " and team " + T2;
@@ -110,6 +122,14 @@ std::string runMatchup(std::string T1, std::string T2, std::string path_to_c5_mm
  */
 std::vector<std::pair<std::string, int> > runAllMatchups(std::string path_to_c5_mmp)
 {
+	// error checking for mmp.avgs file and argument path_to_c5_mmp
+	if(access((path_to_c5_mmp + "/mmp.avgs").c_str(), F_OK ) == -1)
+	{
+		std::vector<std::pair<std::string, int> > error_results;
+		error_results.push_back(std::make_pair("Error: can't find mmp.avgs file. either mmp.avgs does not exist or the argument path_to_c5_mmp is incorrect",0));
+		return error_results;
+	}
+
 	// read team data from .avgs
 	std::vector<std::string> team_data;
 	std::ifstream infile((path_to_c5_mmp + "/mmp.avgs").c_str());
