@@ -1,13 +1,16 @@
 #include "ncaa_test.h"
 
+Tester::Tester()
+{
+	printf("Creating network.\n");
+	ann = fann_create_from_file("neuralNetwork/NCAA_ANN_src/ncaa_float.net");
+	accuracy = 0.0;
+	parse_teams("neuralNetwork/NCAA_ANN_src/teams.txt");
+}
+
 string Tester::getPrediction(string team1,string team2)
 {
-	parse_teams("teams.txt");
 	fann_type *calc_out;
-
-	printf("Creating network.\n");
-	ann = fann_create_from_file("ncaa_float.net");
-
 	if(!ann)
 	{
 		printf("Error creating ann --- ABORTING.\n");
@@ -18,9 +21,7 @@ string Tester::getPrediction(string team1,string team2)
 	fann_print_parameters(ann);
 
 	printf("Testing network.\n");
-
-	data = fann_read_train_from_file("ncaa.data");
-
+	struct fann_train_data *data = fann_read_train_from_file("ncaa.data");
 	map<string, vector<float> >::const_iterator it_team1 = team_stats.find(team1);	
 	if(it_team1 != team_stats.end())
 	{
@@ -48,7 +49,7 @@ string Tester::getPrediction(string team1,string team2)
 					
 					printf("Cleaning up.\n");
 					fann_destroy_train(data);
-					fann_destroy(ann);
+
 					return team2;	
 				}
 				else
@@ -57,7 +58,7 @@ string Tester::getPrediction(string team1,string team2)
 					
 					printf("Cleaning up.\n");
 					fann_destroy_train(data);
-					fann_destroy(ann);
+
 					return team1;	
 				}
 			}
@@ -66,7 +67,7 @@ string Tester::getPrediction(string team1,string team2)
 		{
 			printf("Cleaning up.\n");
 			fann_destroy_train(data);
-			fann_destroy(ann);
+
 			return "Both teams are same.\n";
 		}
 	}
@@ -74,7 +75,7 @@ string Tester::getPrediction(string team1,string team2)
 	{	
 		printf("Cleaning up.\n");
 		fann_destroy_train(data);
-		fann_destroy(ann);		
+		
 		return "One or both team names don't exist. Sorry!\n";
 	}
 
@@ -233,17 +234,13 @@ float Tester::get_accuracy()
 
 int Tester::test_network()
 {
-	parse_teams("teams.txt");
+	//parse_teams("neuralNetwork/NCAA_ANN_src/teams.txt");
 	fann_type *calc_out;
 	unsigned int i;
 	int ret = 0;
 	int num_test_passed = 0;
 	int num_total_tests = 0;
 	
-	printf("Creating network.\n");
-
-	ann = fann_create_from_file("ncaa_float.net");
-
 	if(!ann)
 	{
 		printf("Error creating ann --- ABORTING.\n");
@@ -252,11 +249,10 @@ int Tester::test_network()
 
 	fann_print_connections(ann);
 	fann_print_parameters(ann);
-
+	
 	printf("Testing network.\n");
-
-	data = fann_read_train_from_file("ncaaTest.data");
-
+	struct fann_train_data *data = fann_read_train_from_file("neuralNetwork/NCAA_ANN_src/ncaaTest.data");
+		
 	for(i = 0; i < fann_length_train_data(data); i++)
 	{
 		fann_reset_MSE(ann);
@@ -272,10 +268,14 @@ int Tester::test_network()
 
 	accuracy = ((float)num_test_passed) / ((float) num_total_tests);
 	printf("Accuracy = %f percent\n", accuracy*100.00);
-
-	printf("Cleaning up.\n");
+	calc_rank();
 	fann_destroy_train(data);
-	fann_destroy(ann);
 
 	return ret;
+}
+
+Tester::~Tester()
+{
+	printf("Cleaning up.\n");
+	fann_destroy(ann);
 }

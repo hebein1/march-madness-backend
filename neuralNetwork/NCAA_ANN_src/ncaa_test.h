@@ -23,15 +23,15 @@ class Tester
 		void calc_rank();
 		float get_accuracy();
 		int test_network();	
-		
+		Tester();
+		~Tester();		
 		//public members for testing purposes
 		map<string, int> team_rank;
 		map<string, vector<float> > team_stats;			
 
 	private:
 		float accuracy;
-		struct fann *ann;
-		struct fann_train_data *data;	
+		struct fann *ann;	
 };
 
 #endif
