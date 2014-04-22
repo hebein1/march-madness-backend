@@ -31,6 +31,9 @@ int main()
     Trainer trainer;
     trainer.train_network();
     Tester tester;
+    tester.parse_teams();
+    tester.calc_rank();
+    tester.print_rank();
 
 
     mi.getTeams();
