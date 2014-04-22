@@ -1,5 +1,6 @@
 winner.
 
+team_A_wl: continuous.
 team_A_fgm: continuous.
 team_A_fga: continuous.
 team_A_fgp: continuous.
@@ -27,6 +28,7 @@ team_A_stealpf: continuous.
 team_A_blocks: continuous.
 team_A_blockspf: continuous.
 
+team_B_wl: continuous.
 team_B_fgm: continuous.
 team_B_fga: continuous.
 team_B_fgp: continuous.
@@ -54,6 +56,7 @@ team_B_stealpf: continuous.
 team_B_blocks: continuous.
 team_B_blockspf: continuous.
 
+wl_diff := team_A_wl - team_B_wl.
 fgm_diff := team_A_fgm - team_B_fgm.
 fga_diff := team_A_fga - team_B_fga.
 fgp_diff := team_A_fgp - team_B_fgp.

@@ -36,7 +36,7 @@ TEST(MMP, runMatchupInvalidTeamOneCheck)
 	std::string t2 = "Stony Brook";
 	std::string result = runMatchup(t1,t2,".");
 
-	// check that a winner was selected
+	// check that correct error is returned
 	ASSERT_TRUE(result == "Error: could not find data for team INVALID 1");
 }
 
@@ -50,7 +50,7 @@ TEST(MMP, runMatchupInvalidTeamTwoCheck)
 	std::string t2 = "INVALID 2";
 	std::string result = runMatchup(t1,t2,".");
 
-	// check that a winner was selected
+	// check that correct error is returned
 	ASSERT_TRUE(result == "Error: could not find data for team INVALID 2");
 }
 
@@ -64,8 +64,22 @@ TEST(MMP, runMatchupInvalidTeam1Team2Check)
 	std::string t2 = "INVALID 2";
 	std::string result = runMatchup(t1,t2,".");
 
-	// check that a winner was selected
+	// check that correct error is returned
 	ASSERT_TRUE(result == "Error: could not find data for team INVALID 1 and team INVALID 2");
+}
+
+/*
+ * test runMatchup() with invalid argument path_to_c5_mmp
+ */
+TEST(MMP, runMatchupInvalidPathToMmp)
+{
+	// run a single matchup
+	std::string t1 = "Vermont";
+	std::string t2 = "Stony Brook";
+	std::string result = runMatchup(t1,t2,"./bad_path");
+
+	// check that correct error is returned
+	ASSERT_TRUE(result == "Error: can't find mmp.avgs file. either mmp.avgs does not exist or the argument path_to_c5_mmp is incorrect");
 }
 
 /*
@@ -86,9 +100,21 @@ TEST(MMP, runMatchupValidCheck)
 }
 
 /*
- * test runAllMatchups()
+ * test runAllMatchups() with invalid argument path_to_c5_mmp
  */
-TEST(MMP, runAllMatchupsCheck)
+TEST(MMP, runAllMatchupsInvalidCheck)
+{
+	// run all matchups
+	std::vector<std::pair<std::string, int> > results = runAllMatchups("./bad_path");
+
+	// check that the correct error result is returned
+	ASSERT_TRUE(results[0].first == "Error: can't find mmp.avgs file. either mmp.avgs does not exist or the argument path_to_c5_mmp is incorrect");
+}
+
+/*
+ * test runAllMatchups() with valid argument path_to_c5_mmp
+ */
+TEST(MMP, runAllMatchupsValidCheck)
 {
 	// run all matchups
 	std::vector<std::pair<std::string, int> > results = runAllMatchups(".");
