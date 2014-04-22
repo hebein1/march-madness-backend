@@ -7,26 +7,6 @@
 #include <cstring>
 
 
-TEST(IntegrationConnection, Connect) {
-	ClientConnection cc;
-	EXPECT_TRUE(cc.startConnection());
-	ASSERT_TRUE(cc.getIsConnected());
-	
-	string * message = cc.getMessage();
-	EXPECT_STREQ(message->c_str(),"illinois:michigan");
-	cc.send("illinois:michigan");
-
-	message = cc.getMessage();
-	EXPECT_STREQ(message->c_str(),"michigan:texas:alaska");
-	cc.send("texas:alaska:michigan");
-
-	message = cc.getMessage();
-	EXPECT_STREQ(message->c_str(),"san jose:charleston:qdoba:a:b:c");
-	cc.send("charleston:san jose:qdoba:a:b:c");
-
-	cc.endConnection();
-	EXPECT_FALSE(cc.getIsConnected());
-}
 
 TEST(ClientConnection, ServerRequest) {
 	char test_buffer [ BSIZE ];
