@@ -11,20 +11,13 @@ void buildTree(bool boost, std::string path_to_c5_mmp)
 		std::cout << "Error: can't find c5.0 file. either make has not been run in /c5_mmp/c5_source or the argument path_to_c5_mmp is incorrect\n";
 	}
 
-	FILE* pipe = NULL;
-
 	if(boost)
 	{
-		pipe = popen(("cd " + path_to_c5_mmp + ";" + " ./c5_source/c5.0 -f mmp -b").c_str(), "r");
+		system(("cd " + path_to_c5_mmp + ";" + " ./c5_source/c5.0 -f mmp -b").c_str());
 	}
 	else
 	{
-		pipe = popen(("cd " + path_to_c5_mmp + ";" + " ./c5_source/c5.0 -f mmp").c_str(), "r");
-	}
-
-	if(pipe)
-	{
-		pclose(pipe);
+		system(("cd " + path_to_c5_mmp + ";" + " ./c5_source/c5.0 -f mmp").c_str());
 	}
 }
 
