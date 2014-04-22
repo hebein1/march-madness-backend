@@ -21,7 +21,9 @@ class Tester
 		void parse_teams(char * fileName);
 		void print_rank();
 		void calc_rank();
+		float get_accuracy();
 		int test_network();	
+		
 		//public members for testing purposes
 		map<string, int> team_rank;
 		map<string, vector<float> > team_stats;			
