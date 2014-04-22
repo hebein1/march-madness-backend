@@ -14,10 +14,10 @@ TEST(Games, EntryCheck)
 
     Game testGame = gameRecords.front();
 
-    ASSERT_EQ(testGame.homefgm, 20);
-    ASSERT_EQ(testGame.homefga, 51);
-    ASSERT_EQ(testGame.awayfgm, 24);
-    ASSERT_EQ(testGame.awayfga, 52);
+    ASSERT_STREQ(testGame.homeTeam.c_str(), "Saint Joseph's");
+    ASSERT_STREQ(testGame.awayTeam.c_str(), "Vermont");
+    ASSERT_EQ(testGame.homefgm, 34);
+    ASSERT_EQ(testGame.awayfgm, 36);
 }
 
 /**
@@ -43,8 +43,8 @@ TEST(Teams, EntryCheck)
     Team testTeam = teamRecords.front();
 
     ASSERT_STREQ(testTeam.name.c_str(), "Vermont");
-    ASSERT_EQ((int) testTeam.fgm, (int) 23.0);
-    ASSERT_EQ((int) testTeam.blocksPerFoul, (int) 4.28);
+    ASSERT_EQ((int) testTeam.fgm, (int) 5);
+    ASSERT_EQ((int) testTeam.blocksPerFoul, (int) 0);
 }
 
 /**
@@ -74,10 +74,10 @@ TEST(DB, WriteANN)
     std::string line;
 
     getline(gamesFile, line);
-    ASSERT_STREQ(line.c_str(), "88 52 1");
+    ASSERT_STREQ(line.c_str(), "88 54 1");
 
     getline(gamesFile, line);
-    ASSERT_STREQ(line.c_str(), "20 51 0.392157 16 34 0.470588 4 17 0.235294 20 29 0.689655 6 22 28 1.2549 0.431373 11 9 1.22222 6 26 0.666667 0.230769 7 0.269231 24 52 0.461538 18 36 0.5 6 16 0.375 20 30 0.666667 11 30 41 1.42308 0.519231 10 14 0.714286 3 22 0.214286 0.136364 4 0.181818");
+    ASSERT_STREQ(line.c_str(), "64 34 0.470588 4 17 0.235294 20 29 0.689655 6 22 28 1.2549 0.431373 11 9 1.22222 6 26 0.666667 0.230769 7 0.269231 74 24 52 0.461538 51 36 0.5 6 16 0.375 20 30 0.666667 11 30 41 1.42308 0.519231 10 14 0.714286 3 22 0.214286 0.136364 4 0.181818 2014 2014 0 0");
 
     getline(gamesFile, line);
     ASSERT_STREQ(line.c_str(), "0");
@@ -86,7 +86,7 @@ TEST(DB, WriteANN)
     ASSERT_STREQ(line.c_str(), "Vermont");
 
     getline(teamsFile, line);
-    ASSERT_STREQ(line.c_str(), "23 50 0.469 18 36 0.498 5 14 0.399 17 24 0.731 10 24.8 34.8 1.4 0.527 13 11.9 1.09 7 0 18.5625 0.59 0.38 4.28");
+    ASSERT_STREQ(line.c_str(), "0.123457 5 14 0.399 17 24 0.731 10 24.8 34.8 1.4 0.527 13 11.9 1.09 7 0 18.5625 0.59 0.38 4.28 0.23 3 2014 2014 0 0");
 
     gamesFile.close();
     teamsFile.close();
@@ -109,10 +109,10 @@ TEST(DB, WriteC5)
     std::string line;
 
     getline(gamesFile, line);
-    ASSERT_STREQ(line.c_str(), "20,51,0.392157,16,34,0.470588,4,17,0.235294,20,29,0.689655,6,22,28,1.2549,0.431373,11,9,1.22222,6,26,0.666667,0.230769,7,0.269231,24,52,0.461538,18,36,0.5,6,16,0.375,20,30,0.666667,11,30,41,1.42308,0.519231,10,14,0.714286,3,22,0.214286,0.136364,4,0.181818,B");
+    ASSERT_STREQ(line.c_str(), "64,34,0.470588,4,17,0.235294,20,29,0.689655,6,22,28,1.2549,0.431373,11,9,1.22222,6,26,0.666667,0.230769,7,0.269231,74,24,52,0.461538,51,36,0.5,6,16,0.375,20,30,0.666667,11,30,41,1.42308,0.519231,10,14,0.714286,3,22,0.214286,0.136364,4,0.181818,2014,2014,0,0,B");
 
     getline(teamsFile, line);
-    ASSERT_STREQ(line.c_str(), "Vermont,23,50,0.469,18,36,0.498,5,14,0.399,17,24,0.731,10,24.8,34.8,1.4,0.527,13,11.9,1.09,7,0,18.5625,0.59,0.38,4.28");
+    ASSERT_STREQ(line.c_str(), "Vermont,0.123457,5,14,0.399,17,24,0.731,10,24.8,34.8,1.4,0.527,13,11.9,1.09,7,0,18.5625,0.59,0.38,4.28,0.23,3,2014,2014,0,0");
 
     gamesFile.close();
     teamsFile.close();

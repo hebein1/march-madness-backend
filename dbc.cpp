@@ -35,7 +35,10 @@ std::list<Game> DBC::retrieveGames()
         std::string homeTeam((const char *) sqlite3_column_text(stmt, 3));
         std::string awayTeam((const char *) sqlite3_column_text(stmt, 4));
 
-        int columncount = 5;
+        float homeWL(sqlite3_column_double(stmt, 5));
+        float awayWL(sqlite3_column_double(stmt, 7));
+
+        int columncount = 9;
         float homePoints(sqlite3_column_double(stmt, columncount++));
         float homefgm(sqlite3_column_double(stmt, columncount++));
         float homefga(sqlite3_column_double(stmt, columncount++));
@@ -92,7 +95,7 @@ std::list<Game> DBC::retrieveGames()
         float awayblocksPerFoul(sqlite3_column_double(stmt, columncount++));
 
 
-        Game toBeAdded(homeTeam, awayTeam, homePoints, homefgm, homefga, homefgPer, hometwoMade, hometwoAtt, hometwoPer, homethreeMade, homethreeAtt, homethreePer, homeftm, homefta, homeftPer, homeoffReb, homedefReb, hometotalReb, homepps, homeadjFG, homeassist, hometo, homeapto, homesteals, homefouls, homestealPerTO, homestealPerFoul, homeblocks, homeblocksPerFoul, awaypoints, awayfgm, awayfga, awayfgPer, awaytwoMade, awaytwoAtt, awaytwoPer, awaythreeMade, awaythreeAtt, awaythreePer, awayftm, awayfta, awayftPer, awayoffReb, awaydefReb, awaytotalReb, awaypps, awayadjFG, awayassist, awayto, awayapto, awaysteals, awayfouls, awaystealPerTO, awaystealPerFoul, awayblocks, awayblocksPerFoul);
+        Game toBeAdded(homeTeam, awayTeam, homeWL, homePoints, homefgm, homefga, homefgPer, hometwoMade, hometwoAtt, hometwoPer, homethreeMade, homethreeAtt, homethreePer, homeftm, homefta, homeftPer, homeoffReb, homedefReb, hometotalReb, homepps, homeadjFG, homeassist, hometo, homeapto, homesteals, homefouls, homestealPerTO, homestealPerFoul, homeblocks, homeblocksPerFoul, awayWL, awaypoints, awayfgm, awayfga, awayfgPer, awaytwoMade, awaytwoAtt, awaytwoPer, awaythreeMade, awaythreeAtt, awaythreePer, awayftm, awayfta, awayftPer, awayoffReb, awaydefReb, awaytotalReb, awaypps, awayadjFG, awayassist, awayto, awayapto, awaysteals, awayfouls, awaystealPerTO, awaystealPerFoul, awayblocks, awayblocksPerFoul);
         gameRecords.push_back(toBeAdded);
 
         result = sqlite3_step(stmt);
@@ -119,7 +122,11 @@ std::list<Team> DBC::retrieveTeams()
     {
         std::string name((const char *) sqlite3_column_text(stmt, 1));
 
-        int columncount = 9;
+        int wins(sqlite3_column_int(stmt, 7));
+        int losses(sqlite3_column_int(stmt, 8));
+        float wl = ((float) wins)/((float)wins + losses);
+
+        int columncount = 15;
         float fgm(sqlite3_column_double(stmt, columncount++));
         float fga(sqlite3_column_double(stmt, columncount++));
         float fgPer(sqlite3_column_double(stmt, columncount++));
@@ -147,7 +154,7 @@ std::list<Team> DBC::retrieveTeams()
         float blocks(sqlite3_column_double(stmt, columncount++));
         float blocksPerFoul(sqlite3_column_double(stmt, columncount++));
 
-        Team toBeAdded(name, fgm, fga, fgPer, twoMade, twoAtt, twoPer, threeMade, threeAtt, threePer, ftm, fta, ftPer, offReb, defReb, totalReb, pps, adjFG, assist, to, apto, steals, fouls, stealPerTO, stealPerFoul, blocks, blocksPerFoul);
+        Team toBeAdded(name, wl, fgm, fga, fgPer, twoMade, twoAtt, twoPer, threeMade, threeAtt, threePer, ftm, fta, ftPer, offReb, defReb, totalReb, pps, adjFG, assist, to, apto, steals, fouls, stealPerTO, stealPerFoul, blocks, blocksPerFoul);
 
         if (fgm != 0)
             teamRecords.push_back(toBeAdded);
@@ -169,8 +176,8 @@ void DBC::writeC5(std::string filename)
     std::list <Game> gameHistory = retrieveGames();
     for(auto it = gameHistory.begin(); it != gameHistory.end(); it++)
     {
-        cfile << it -> homefgm << "," << it -> homefga << "," << it -> homefgPer << "," << it -> hometwoMade << "," << it -> hometwoAtt << "," << it -> hometwoPer << "," << it -> homethreeMade << "," << it -> homethreeAtt << "," << it -> homethreePer << "," << it -> homeftm << "," << it -> homefta << "," << it -> homeftPer << "," << it -> homeoffReb << "," << it -> homedefReb << "," << it -> hometotalReb << "," << it -> homepps << "," << it -> homeadjFG << "," << it -> homeassist << "," << it -> hometo << "," << it -> homeapto << "," << it -> homesteals << "," << it -> homefouls << "," << it -> homestealPerTO << "," << it -> homestealPerFoul << "," << it -> homeblocks << "," << it -> homeblocksPerFoul << ",";
-        cfile << it -> awayfgm << "," << it -> awayfga << "," << it -> awayfgPer << "," << it -> awaytwoMade << "," << it -> awaytwoAtt << "," << it -> awaytwoPer << "," << it -> awaythreeMade << "," << it -> awaythreeAtt << "," << it -> awaythreePer << "," << it -> awayftm << "," << it -> awayfta << "," << it -> awayftPer << "," << it -> awayoffReb << "," << it -> awaydefReb << "," << it -> awaytotalReb << "," << it -> awaypps << "," << it -> awayadjFG << "," << it -> awayassist << "," << it -> awayto << "," << it -> awayapto << "," << it -> awaysteals << "," << it -> awayfouls << "," << it -> awaystealPerTO << "," << it -> awaystealPerFoul << "," << it -> awayblocks << "," << it -> awayblocksPerFoul << ",";  
+        cfile << it -> homeWL << "," << it -> homefgm << "," << it -> homefga << "," << it -> homefgPer << "," << it -> hometwoMade << "," << it -> hometwoAtt << "," << it -> hometwoPer << "," << it -> homethreeMade << "," << it -> homethreeAtt << "," << it -> homethreePer << "," << it -> homeftm << "," << it -> homefta << "," << it -> homeftPer << "," << it -> homeoffReb << "," << it -> homedefReb << "," << it -> hometotalReb << "," << it -> homepps << "," << it -> homeadjFG << "," << it -> homeassist << "," << it -> hometo << "," << it -> homeapto << "," << it -> homesteals << "," << it -> homefouls << "," << it -> homestealPerTO << "," << it -> homestealPerFoul << "," << it -> homeblocks << "," << it -> homeblocksPerFoul << ",";
+        cfile << it -> awayWL << "," << it -> awayfgm << "," << it -> awayfga << "," << it -> awayfgPer << "," << it -> awaytwoMade << "," << it -> awaytwoAtt << "," << it -> awaytwoPer << "," << it -> awaythreeMade << "," << it -> awaythreeAtt << "," << it -> awaythreePer << "," << it -> awayftm << "," << it -> awayfta << "," << it -> awayftPer << "," << it -> awayoffReb << "," << it -> awaydefReb << "," << it -> awaytotalReb << "," << it -> awaypps << "," << it -> awayadjFG << "," << it -> awayassist << "," << it -> awayto << "," << it -> awayapto << "," << it -> awaysteals << "," << it -> awayfouls << "," << it -> awaystealPerTO << "," << it -> awaystealPerFoul << "," << it -> awayblocks << "," << it -> awayblocksPerFoul << ",";  
         if (it -> homePoints >= it -> awaypoints)
             cfile << "A\n";
         else
@@ -189,7 +196,7 @@ void DBC::writeC5Teams(std::string filename)
     std::list <Team> teams = retrieveTeams();
     for(auto it = teams.begin(); it != teams.end(); it++)
     {
-        cfile << it -> name << "," << it -> fgm << "," << it -> fga << "," << it -> fgPer << "," << it -> twoMade << "," << it -> twoAtt << "," << it -> twoPer << "," << it -> threeMade << "," << it -> threeAtt << "," << it -> threePer << "," << it -> ftm << "," << it -> fta << "," << it -> ftPer << "," << it -> offReb << "," << it -> defReb << "," << it -> totalReb << "," << it -> pps << "," << it -> adjFG << "," << it -> assist << "," << it -> to << "," << it -> apto << "," << it -> steals << "," << it -> fouls << "," << it -> stealPerTO << "," << it -> stealPerFoul << "," << it -> blocks << "," << it -> blocksPerFoul << "\n";
+        cfile << it -> name << "," << it -> wl << "," << it -> fgm << "," << it -> fga << "," << it -> fgPer << "," << it -> twoMade << "," << it -> twoAtt << "," << it -> twoPer << "," << it -> threeMade << "," << it -> threeAtt << "," << it -> threePer << "," << it -> ftm << "," << it -> fta << "," << it -> ftPer << "," << it -> offReb << "," << it -> defReb << "," << it -> totalReb << "," << it -> pps << "," << it -> adjFG << "," << it -> assist << "," << it -> to << "," << it -> apto << "," << it -> steals << "," << it -> fouls << "," << it -> stealPerTO << "," << it -> stealPerFoul << "," << it -> blocks << "," << it -> blocksPerFoul << "\n";
     }
     cfile.close();
 
@@ -203,11 +210,11 @@ void DBC::writeANN(std::string filename)
     std::ofstream afile(filename.c_str());
     std::list<Game> gameHistory = retrieveGames();
 
-    afile << gameHistory.size() << " 52 1\n";
+    afile << gameHistory.size() << " 54 1\n";
     for(auto it = gameHistory.begin(); it != gameHistory.end(); it++)
     {
-        afile << it -> homefgm << " " << it -> homefga << " " << it -> homefgPer << " " << it -> hometwoMade << " " << it -> hometwoAtt << " " << it -> hometwoPer << " " << it -> homethreeMade << " " << it -> homethreeAtt << " " << it -> homethreePer << " " << it -> homeftm << " " << it -> homefta << " " << it -> homeftPer << " " << it -> homeoffReb << " " << it -> homedefReb << " " << it -> hometotalReb << " " << it -> homepps << " " << it -> homeadjFG << " " << it -> homeassist << " " << it -> hometo << " " << it -> homeapto << " " << it -> homesteals << " " << it -> homefouls << " " << it -> homestealPerTO << " " << it -> homestealPerFoul << " " << it -> homeblocks << " " << it -> homeblocksPerFoul << " ";
-        afile << it -> awayfgm << " " << it -> awayfga << " " << it -> awayfgPer << " " << it -> awaytwoMade << " " << it -> awaytwoAtt << " " << it -> awaytwoPer << " " << it -> awaythreeMade << " " << it -> awaythreeAtt << " " << it -> awaythreePer << " " << it -> awayftm << " " << it -> awayfta << " " << it -> awayftPer << " " << it -> awayoffReb << " " << it -> awaydefReb << " " << it -> awaytotalReb << " " << it -> awaypps << " " << it -> awayadjFG << " " << it -> awayassist << " " << it -> awayto << " " << it -> awayapto << " " << it -> awaysteals << " " << it -> awayfouls << " " << it -> awaystealPerTO << " " << it -> awaystealPerFoul << " " << it -> awayblocks << " " << it -> awayblocksPerFoul << "\n";  
+        afile <<  it -> homeWL << " " << it -> homefgm << " " << it -> homefga << " " << it -> homefgPer << " " << it -> hometwoMade << " " << it -> hometwoAtt << " " << it -> hometwoPer << " " << it -> homethreeMade << " " << it -> homethreeAtt << " " << it -> homethreePer << " " << it -> homeftm << " " << it -> homefta << " " << it -> homeftPer << " " << it -> homeoffReb << " " << it -> homedefReb << " " << it -> hometotalReb << " " << it -> homepps << " " << it -> homeadjFG << " " << it -> homeassist << " " << it -> hometo << " " << it -> homeapto << " " << it -> homesteals << " " << it -> homefouls << " " << it -> homestealPerTO << " " << it -> homestealPerFoul << " " << it -> homeblocks << " " << it -> homeblocksPerFoul << " ";
+        afile << it -> awayWL << " " << it -> awayfgm << " " << it -> awayfga << " " << it -> awayfgPer << " " << it -> awaytwoMade << " " << it -> awaytwoAtt << " " << it -> awaytwoPer << " " << it -> awaythreeMade << " " << it -> awaythreeAtt << " " << it -> awaythreePer << " " << it -> awayftm << " " << it -> awayfta << " " << it -> awayftPer << " " << it -> awayoffReb << " " << it -> awaydefReb << " " << it -> awaytotalReb << " " << it -> awaypps << " " << it -> awayadjFG << " " << it -> awayassist << " " << it -> awayto << " " << it -> awayapto << " " << it -> awaysteals << " " << it -> awayfouls << " " << it -> awaystealPerTO << " " << it -> awaystealPerFoul << " " << it -> awayblocks << " " << it -> awayblocksPerFoul << "\n";  
         if (it -> homePoints >= it -> awaypoints)
             afile << 1;
         else
@@ -227,7 +234,7 @@ void DBC::writeANNTeams(std::string filename)
     for(auto it = teams.begin(); it != teams.end(); it++)
     {
         afile << it -> name << "\n";
-        afile  << it -> fgm << " " << it -> fga << " " << it -> fgPer << " " << it -> twoMade << " " << it -> twoAtt << " " << it -> twoPer << " " << it -> threeMade << " " << it -> threeAtt << " " << it -> threePer << " " << it -> ftm << " " << it -> fta << " " << it -> ftPer << " " << it -> offReb << " " << it -> defReb << " " << it -> totalReb << " " << it -> pps << " " << it -> adjFG << " " << it -> assist << " " << it -> to << " " << it -> apto << " " << it -> steals << " " << it -> fouls << " " << it -> stealPerTO << " " << it -> stealPerFoul << " " << it -> blocks << " " << it -> blocksPerFoul << "\n";
+        afile << it -> wl << " " << it -> fgm << " " << it -> fga << " " << it -> fgPer << " " << it -> twoMade << " " << it -> twoAtt << " " << it -> twoPer << " " << it -> threeMade << " " << it -> threeAtt << " " << it -> threePer << " " << it -> ftm << " " << it -> fta << " " << it -> ftPer << " " << it -> offReb << " " << it -> defReb << " " << it -> totalReb << " " << it -> pps << " " << it -> adjFG << " " << it -> assist << " " << it -> to << " " << it -> apto << " " << it -> steals << " " << it -> fouls << " " << it -> stealPerTO << " " << it -> stealPerFoul << " " << it -> blocks << " " << it -> blocksPerFoul << "\n";
     }
     afile.close();
 
