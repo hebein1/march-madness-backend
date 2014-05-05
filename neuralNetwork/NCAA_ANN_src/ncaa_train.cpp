@@ -11,7 +11,7 @@ int Trainer::FANN_API test_callback(struct fann *ann, struct fann_train_data *tr
 int Trainer::train_network()
 {
 	fann_type *calc_out;
-	const unsigned int num_input = 52;
+	const unsigned int num_input = 54;
 	const unsigned int num_output = 1;
 	const unsigned int num_layers = 3;
 	const unsigned int num_neurons_hidden = 20;

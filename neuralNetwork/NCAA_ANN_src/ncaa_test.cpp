@@ -8,6 +8,13 @@ Tester::Tester()
 	parse_teams("neuralNetwork/NCAA_ANN_src/teams.txt");
 }
 
+Tester::Tester(int test)
+{
+	printf("Automated Testing.\n");
+	ann = fann_create_from_file("../../ncaa_float.net");	
+	accuracy = 0.0;
+}
+
 string Tester::getPrediction(string team1,string team2)
 {
 	fann_type *calc_out;
