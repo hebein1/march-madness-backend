@@ -23,9 +23,11 @@ class Tester
 		void calc_rank();
 		float get_accuracy();
 		int test_network();	
+		
 		Tester();
 		Tester(int test);
 		~Tester();		
+		
 		//public members for testing purposes
 		map<string, int> team_rank;
 		map<string, vector<float> > team_stats;			

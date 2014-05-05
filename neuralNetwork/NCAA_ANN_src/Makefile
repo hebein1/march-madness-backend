@@ -34,5 +34,5 @@ runalgo: $(TARGETS)
 	./ncaa_train
 
 	@echo
-	@echo Testing network with floats
+	@echo Testing network
 	./ncaa_test

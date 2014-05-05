@@ -8,6 +8,7 @@ Tester::Tester()
 	parse_teams("neuralNetwork/NCAA_ANN_src/teams.txt");
 }
 
+//construcor for automated testing purposes only
 Tester::Tester(int test)
 {
 	printf("Automated Testing.\n");
@@ -15,6 +16,7 @@ Tester::Tester(int test)
 	accuracy = 0.0;
 }
 
+//returns the name of the winner after running the algorithm on the input teams
 string Tester::getPrediction(string team1,string team2)
 {
 	fann_type *calc_out;
@@ -88,11 +90,13 @@ string Tester::getPrediction(string team1,string team2)
 
 }
 
+//runs the algorithm using the network and the fann_type input
 fann_type * const Tester::run_fann(struct fann * ann, fann_type stat_input[])
 {
 	return fann_run(ann, stat_input);			
 }
 
+//parses the teams stats and initializes maps
 void Tester::parse_teams(char * fileName)
 {
 	FILE *teams_file = fopen(fileName, "r");
@@ -131,18 +135,17 @@ void Tester::parse_teams(char * fileName)
 		}
 		
 	}
-	
-	//print_rank();
 }
 
+//prints the calculated ranking of teams with their score
 void Tester::print_rank()
 {
 	map<int, vector<string> > result_map;	
 
+	//sorts by value instead of keys in descending order
 	map<string, int>::const_iterator it;
 	for(it = team_rank.begin(); it != team_rank.end(); ++it)
 	{
-		//printf("%s => %d\n", (it->first).c_str(), it->second);
 		map<int, vector<string> >::const_iterator search = result_map.find((-1)*it->second);
 		if(search == result_map.end())
 		{
@@ -172,6 +175,7 @@ void Tester::print_rank()
 	}
 }
 
+//calculates rank by running algorithm on each possible matchup and adding 1 for win or subtracting 1 for loss
 void Tester::calc_rank()
 {
 	map<string, vector<float> >::const_iterator it_team1;	
@@ -234,14 +238,15 @@ void Tester::calc_rank()
 	print_rank();
 }
 
+//returns the accuracy
 float Tester::get_accuracy()
 {
 	return accuracy;
 }
 
+//tests the netowork and calculates accuracy
 int Tester::test_network()
 {
-	//parse_teams("neuralNetwork/NCAA_ANN_src/teams.txt");
 	fann_type *calc_out;
 	unsigned int i;
 	int ret = 0;

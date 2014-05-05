@@ -9,6 +9,17 @@ March Madness Engine
 **Run C5**
 * ./mmp_c5_tests # run c5_mmp automated test cases
 
+**Build ANN**
+* cd neuralNetwork
+* cmake . # installation step 1 for FANN
+* sudo make install # installation step 2 for FANN
+* cd NCAA_ANN_src
+* make && make init # compiles algorithm code, unit tests and gtest
+
+**Run ANN**
+* cd NCAA_ANN_src
+* ./ann_test # run annTest automated test cases
+
 **Build Engine**
 * make sure you are in the root directory of the project
 * make init # compiles gtest, you only need to run this once

@@ -1,5 +1,6 @@
 #include "ncaa_train.h"
 
+//callback function to print epoch status
 int Trainer::FANN_API test_callback(struct fann *ann, struct fann_train_data *train,
 	unsigned int max_epochs, unsigned int epochs_between_reports, 
 	float desired_error, unsigned int epochs)
@@ -8,6 +9,7 @@ int Trainer::FANN_API test_callback(struct fann *ann, struct fann_train_data *tr
 	return 0;
 }
 
+//trains the neural network based on given data set
 int Trainer::train_network()
 {
 	fann_type *calc_out;
@@ -44,20 +46,6 @@ int Trainer::train_network()
 
 	printf("Training network.\n");
 	fann_train_on_data(ann, data, max_epochs, epochs_between_reports, desired_error);
-
-	/**
-	
-	printf("Testing network. %f\n", fann_test_data(ann, data));
-
-	for(i = 0; i < fann_length_train_data(data); i++)
-	{
-		calc_out = fann_run(ann, data->input[i]);
-		printf("Matchup scores test (%f,%f) -> %f, should be %f, difference=%f\n",
-			   data->input[i][0], data->input[i][1], calc_out[0], data->output[i][0],
-			   fann_abs(calc_out[0] - data->output[i][0]));
-	}
-
-	**/
 	
 	printf("Saving network.\n");
 
